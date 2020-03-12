@@ -39,6 +39,7 @@ public class Kayttoliittyma {
 
     public void kaynnista() {
         while (true) {
+            // estetään värin tulostamisesta johtuva bugi
             kasitteleKomento("a");
             kasitteleKomento("d");
 
