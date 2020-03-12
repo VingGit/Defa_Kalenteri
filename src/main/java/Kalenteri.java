@@ -171,9 +171,6 @@ public class Kalenteri {
     }
     
     public void liikuOikealle() {
-        /*if (this.pvm.getDayOfMonth() == this.pvm.lengthOfMonth() || this.pvm.getDayOfWeek().getValue() == 7) {
-            return;
-        }*/
         if (this.pvm.getDayOfMonth() == this.pvm.lengthOfMonth()) {
             this.pvm = this.pvm.minusDays(this.pvm.getDayOfWeek().getValue() - 1);
             return;
