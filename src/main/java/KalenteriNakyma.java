@@ -1,10 +1,10 @@
-import org.w3c.dom.ls.LSOutput;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.HashMap;
 
-/** Staattinen luokka, jonka avulla voidaan tulostaa yksi kuukausi tai koko vuosi.
+/** Staattinen luokka, jonka avulla voidaan tulostaa kuukausi tai päivä näkymä.
  */
 
 public abstract class KalenteriNakyma {
@@ -18,7 +18,7 @@ public abstract class KalenteriNakyma {
         return dayOfWeek.getValue();
     }
 
-    public static void tulostaKuukausi(int paiva, int kuukausi, int vuosi, DayOfWeek vkpaiva, HashMap juhlat) {
+    public static void tulostaKuukausi(int paiva, int kuukausi, int vuosi, DayOfWeek vkpaiva, HashMap juhlat, ArrayList<Tapahtuma> tapahtumat, ArrayList<Tehtava> tehtavat) {
 
         // spaces required
         int spaces = getDay(vuosi, kuukausi) - 1;
@@ -34,11 +34,11 @@ public abstract class KalenteriNakyma {
 
             // print calendar header
             // Display the month and year
-            System.out.println("    " + Viikonpaivat.annaViikonpaiva(vkpaiva.getValue()) + " " + paiva + ". " + Kuukaudet.annaKuukausi(M) + "ta " + vuosi);
+            System.out.println("           " + Kuukaudet.annaKuukausi(M)  + " " +vuosi);
 
             // Display the lines
-            System.out.println("__________________________________");
-            System.out.println("  Ma   Ti   Ke   To   Pe   La   Su");
+            System.out.println(" ____________________________________");
+            System.out.println("   Ma   Ti   Ke   To   Pe   La   Su");
 
             // print the calendar
             for (int i = 0; i < spaces; i++) {
@@ -46,8 +46,9 @@ public abstract class KalenteriNakyma {
             }
             for (int j = 1; j <= days; j++) {
 
+                // Onko päivässä juhla?
                 if (juhlat.containsKey((LocalDate.of(vuosi, kuukausi, j)))) {
-                    System.out.print(Varit.CYAN);
+                    System.out.print(Varit.RED);
                 }
 
                 if (!juhlat.containsKey((LocalDate.of(vuosi, kuukausi, j)))) {
@@ -55,21 +56,47 @@ public abstract class KalenteriNakyma {
 
                 }
 
-                if (j == paiva) {
-                    System.out.print(Varit.RED);
+                // Onko päivässä tapahtuma?
+                LocalDate pvm = (LocalDate.of(vuosi, kuukausi, j));
+                for (Tapahtuma t : tapahtumat) {
+                    if (pvm.isAfter(t.annaAloitus().toLocalDate())  &&  (pvm.isBefore(t.annaLopetus().toLocalDate()))  ||
+                            pvm.isEqual(t.annaAloitus().toLocalDate())  ||
+                            pvm.isEqual(t.annaLopetus().toLocalDate())) {
+                        System.out.print(Varit.GREEN);
 
+                    }
                 }
 
-                System.out.printf(" %3d ", j);
+                // Onko päivässä tehtävä?
+                for (Tehtava t : tehtavat) {
+                    if (pvm.isEqual(t.annaAloitus().toLocalDate())) {
+                        System.out.print(Varit.GREEN);
+                    }
+                }
+
+                //System.out.printf(" %3d ", j);
+                //ystem.out.printf(" %3d ",  j);
+
+                System.out.print("   ");
+                if (j == paiva) {
+                    System.out.print(Varit.CYAN_BACKGROUND);
+                }
+
+                if (j < 10) {
+                    System.out.print(" " + j);
+                } else {
+                    System.out.print(j);
+                }
 
                 if (((j + spaces) % 7 == 0) || (j == days)) {
                     System.out.println(Varit.RESET);
                 }
-
             }
-            System.out.println("__________________________________");
+            System.out.println(" ____________________________________");
         }
     }
+
+    //public static void tulostaPaiva(int paiva, int kuukausi, int vuosi, DayOfWeek vkpaiva, HashMap juhlat, ArrayList<Tapahtuma> tapahtumat) { }
 
 
 

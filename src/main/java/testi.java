@@ -2,6 +2,10 @@ import javax.swing.*;
 import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.chrono.ChronoLocalDate;
+import java.time.temporal.TemporalAccessor;
 import java.util.Arrays;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -22,41 +26,17 @@ public class testi {
 
     public static void main (String args[]) {
 
-        JComponent myComponent = null;
-        myComponent.getInputMap().put(KeyStroke.getKeyStroke("a"), "myAction");
-        //myComponent.getActionMap().put("myAction", action);
+        LocalDateTime date1 = LocalDateTime.of(LocalDate.of(2019,3,8), LocalTime.of(12,0));
+        LocalDateTime date = LocalDateTime.of(LocalDate.of(2021,3,8), LocalTime.of(12,1));
+        LocalDateTime date2 = LocalDateTime.of(LocalDate.of(2021,3,8), LocalTime.of(12,0));
 
+        if ( date.isAfter(date1)  &&  date.isBefore(date2)   ||
+                date.isEqual(date1)  ||
+                date.isEqual(date2)               ) {
+            System.out.println("totta");
+        }
 
     }
 
 }
-
-
-
-
-/*public class testi {
-    public static void main (String args[]){
-    
-        while(true){
-            System.out.println("asoudihas");
-            Scanner lukija = new Scanner(System.in);
-
-            String a = lukija.nextLine();
-
-            if(a.equals("poista")){
-                clrscr();
-            }
-        }
-    }
-
-    public static void clrscr(){
-
-        try {
-            if (System.getProperty("os.name").contains("Windows"))
-                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-            else
-                Runtime.getRuntime().exec("clear");
-        } catch (IOException | InterruptedException ex) {}
-    }
-}*/
 

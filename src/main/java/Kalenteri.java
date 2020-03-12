@@ -1,5 +1,9 @@
 import java.io.*;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.chrono.ChronoLocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class Kalenteri {
@@ -51,6 +55,7 @@ public class Kalenteri {
 
 
     /**___________________TAPAHTUMIIN/TEHTÄVIIN/JUHLIIN LIITTYVÄT METODIT______________________________________
+     * Näillä metodeilla voidaan käsitellä kalenterin listoja.
      */
     
     public void lisaaTapahtuma(Tapahtuma tapahtuma) {
@@ -58,71 +63,73 @@ public class Kalenteri {
     }
     
     public boolean poistaTapahtuma(String poistettavanNimi) {
-        return this.tapahtumat.removeIf(i -> this.pvm.equals(i.annaPvm()) && poistettavanNimi.equals(i.annaNimi()));
+        return this.tapahtumat.removeIf(i -> poistettavanNimi.equals(i.annaNimi()));
 
     }
         
-    public void poistaPaivanTapahtumat() {
-        this.tapahtumat.removeIf(i -> this.pvm.equals(i.annaPvm()));
+    public boolean poistaPaivanTapahtumat() {
+        return this.tapahtumat.removeIf(i ->
+            (this.pvm.isAfter(i.annaAloitus().toLocalDate())  &&  (this.pvm.isBefore(i.annaLopetus().toLocalDate()))  ||
+             this.pvm.isEqual(i.annaAloitus().toLocalDate())  ||
+             this.pvm.isEqual(i.annaLopetus().toLocalDate())));
     }
 
     public ArrayList<Tapahtuma> annaTapahtumaLista() {
         return this.tapahtumat;
     }
     
-    public boolean eiTapahtumia() {
+    public boolean onkoTapahtumia() {
         for (Tapahtuma t : this.tapahtumat) {
-            if (this.pvm.equals(t.annaPvm())) {
-                return false;
+            if ( this.pvm.isAfter(t.annaAloitus().toLocalDate())  &&  (this.pvm.isBefore(t.annaLopetus().toLocalDate()))  ||
+                 this.pvm.isEqual(t.annaAloitus().toLocalDate())  ||
+                 this.pvm.isEqual(t.annaLopetus().toLocalDate()))  {
+                 return true;
             }
         }
-        return true;
+        return false;
     }
 
     public void lisaaTehtava(Tehtava tehtava) {
         this.tehtavat.add(tehtava);
     }
-    
+
     public boolean poistaTehtava(String poistettavanNimi) {
-        return this.tehtavat.removeIf(i -> this.pvm.equals(i.annaPvm()) && poistettavanNimi.equals(i.annaNimi()));
+        return this.tehtavat.removeIf(i -> this.pvm.isEqual(i.annaAloitus().toLocalDate()) && poistettavanNimi.equals(i.annaNimi()));
     }
     
-    public void poistaPaivanTehtavat() {
-        this.tehtavat.removeIf(i -> this.pvm.equals(i.annaPvm()));
+    public boolean poistaPaivanTehtavat() {
+        return this.tehtavat.removeIf(i -> this.pvm.isEqual(i.annaAloitus().toLocalDate()));
     }
 
     public ArrayList<Tehtava> annaTehtavaLista() {
         return this.tehtavat;
     }
-    
-    public boolean eiTehtavia() {
+
+    public boolean onkoTehtavia() {
         for (Tehtava t : this.tehtavat) {
-            if (this.pvm.equals(t.annaPvm())) {
-                return false;
+            if (this.pvm.isEqual(t.annaAloitus().toLocalDate())) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
-    public boolean eiJuhla() {
+    public boolean onkoJuhla() {
         Iterator it = juhlat.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry)it.next();
             if ( this.pvm.equals(pair.getKey()) ) {
-                return false;
+                return true;
             }
         }
-        return true;
-    }
-
-    public HashMap getJuhlat() {
-        return this.juhlat;
+        return false;
     }
 
     public ArrayList<Tapahtuma> annaKuukaudenTapahtumat() {
         ArrayList<Tapahtuma> paivanTapahtumat = new ArrayList<>();
         for (Tapahtuma t : this.tapahtumat) {
-            if (Integer.valueOf(t.annaKuukausi()) == this.pvm.getMonthValue()) {
+            if (Integer.valueOf(t.annaAloitus().getMonthValue()) == this.pvm.getMonthValue()  /*||
+                Integer.valueOf(t.annaLopetus().getMonthValue()) == this.pvm.getMonthValue()*/ ) {
                 paivanTapahtumat.add(t);
             }
         }
@@ -132,7 +139,7 @@ public class Kalenteri {
     public ArrayList<Tehtava> annaKuukaudenTehtavat() {
         ArrayList<Tehtava> paivanTehtavat = new ArrayList<>();
         for (Tehtava t : this.tehtavat) {
-            if (t.annaKuukausi() == this.pvm.getMonthValue()) {
+            if (t.annaAloitus().getDayOfMonth() == this.pvm.getMonthValue()) {
                 paivanTehtavat.add(t);
             }
         }
@@ -203,9 +210,18 @@ public class Kalenteri {
         Juhlapyhat.asetaJuhlat(this.juhlat, this.pvm.getYear());
     }
 
-    public void muutaPaivamaaraa(int paiva, int kuukausi, int vuosi) {
+    public void asetaPaivamaaraa(int paiva, int kuukausi, int vuosi) {
         int vuosiTallenna = this.pvm.getYear();
         this.pvm = LocalDate.of(vuosi, kuukausi, paiva);
+        if(vuosiTallenna != this.pvm.getYear()) {
+            this.juhlat.clear();
+            Juhlapyhat.asetaJuhlat(this.juhlat, this.pvm.getYear());
+        }
+    }
+
+    public void asetaPaivamaaraa(LocalDate pvm) {
+        int vuosiTallenna = this.pvm.getYear();
+        this.pvm = pvm;
         if(vuosiTallenna != this.pvm.getYear()) {
             this.juhlat.clear();
             Juhlapyhat.asetaJuhlat(this.juhlat, this.pvm.getYear());
@@ -223,15 +239,65 @@ public class Kalenteri {
 
 
     /**_________________________________TULOSTUSMETODIT__________________________________________________
-     * Voidaan tulostaa kuukausinäkymä,
-     * juhlapäivä jos kyseinen päivä on juhlapäivä,
-     * päivän tapahtumat,
-     * päivän tehtävät,
-     * kuukauden muistutukset
      */
 
+    public void tulostaTervehdysJaKello() {
+        LocalDate pvm = LocalDate.now();
+        String aika = LocalTime.now().truncatedTo(ChronoUnit.MINUTES).toString();
+
+        // Koneen käyttäjä merkkijonoksi, muutetaan ensimmäinen kirjain isoksi.
+        String kayttaja = System.getProperty("user.name");
+        char nimenEkaKirjain = Character.toUpperCase(kayttaja.charAt(0));
+        String kayttajaEkaIso = nimenEkaKirjain + kayttaja.substring(1);
+
+        // Tervehditään käyttäjää, kerrotaan viikonpäivä, päiväys sekä kellonaika.
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d.M.y");
+        System.out.println("             Hei " + kayttajaEkaIso + "!");
+        System.out.println("     Tänään on " + Viikonpaivat.annaViikonpaiva(pvm.getDayOfWeek().getValue()) + " " + pvm.format(formatter));
+        System.out.println("               " + aika);
+    }
+
+    public void tulostaVuosiNakyma() {
+        System.out.println("Ei toimi vielä");
+    }
+
     public void tulostaKuukausiNakyma() {
-        KalenteriNakyma.tulostaKuukausi( this.pvm.getDayOfMonth(), this.pvm.getMonthValue(), this.pvm.getYear(), this.pvm.getDayOfWeek(), this.juhlat);
+        KalenteriNakyma.tulostaKuukausi( this.pvm.getDayOfMonth(), this.pvm.getMonthValue(), this.pvm.getYear(), this.pvm.getDayOfWeek(), this.juhlat, this.tapahtumat, this.tehtavat) ;
+    }
+
+    public void tulostaPaivaNakyma() {
+        //KalenteriNakyma.tulostaPaiva( this.pvm.getDayOfMonth(), this.pvm.getMonthValue(), this.pvm.getYear(), this.pvm.getDayOfWeek(), this.juhlat, this.tapahtumat );
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d.M.y");
+        System.out.println();
+        System.out.println("                 " + this.pvm.format(formatter));
+        System.out.print("            ");
+        tulostaJuhlapaiva();
+
+        System.out.println();
+        System.out.println("  ------------ Tapahtumat ----------- ");
+
+        for (Tapahtuma t : this.tapahtumat) {
+            if (this.pvm.isAfter(t.annaAloitus().toLocalDate())  &&  (this.pvm.isBefore(t.annaLopetus().toLocalDate()))  ||
+                this.pvm.isEqual(t.annaAloitus().toLocalDate())  ||
+                this.pvm.isEqual(t.annaLopetus().toLocalDate()))  {
+
+                System.out.print(Varit.BLUE);
+                System.out.println("  " + t.toString());
+                System.out.print(Varit.RESET);
+                System.out.println("");
+            }
+        }
+
+        System.out.println("  ------------ Tehtävät ------------ ");
+
+        for (Tehtava t : this.tehtavat) {
+            if (this.pvm.isEqual(t.annaAloitus().toLocalDate())) {
+                System.out.print(Varit.GREEN);
+                System.out.println("  " + t.toString());
+                System.out.print(Varit.RESET);
+                System.out.println("");
+            }
+        }
     }
 
     public void tulostaJuhlapaiva() {
@@ -240,63 +306,61 @@ public class Kalenteri {
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry)it.next();
             if ( today.equals(pair.getKey()) ) {
-
-                System.out.println("   " + pair.getValue() + Varit.YELLOW);
+                System.out.print(Varit.RED);
+                System.out.println("  " + pair.getValue());
                 System.out.print(Varit.RESET);
             }
         }
     }
 
-    public void tulostaTapahtumat() {
-        System.out.println("!---------- " + this.pvm.getDayOfMonth() + ". p\u00E4iv\u00E4n tapahtumat ------------!");
+    public void tulostaMerkinnat() {
+        System.out.println("  ------ p\u00E4iv\u00E4n merkinnät ------");
 
         tulostaJuhlapaiva();
 
-        if (eiTapahtumia() && eiJuhla()) {
-            System.out.println("  Ei tapahtumia");
+        if (!onkoTapahtumia() && !onkoTehtavia() && !onkoJuhla()/* && !onkoMuistutuksia*/) {
+            System.out.println("   Ei merkintöjä");
+            return;
         }
 
         for (Tapahtuma t : this.tapahtumat) {
-            if (this.pvm.equals(t.annaPvm())) {
-                System.out.print(Varit.BLUE);
-                System.out.println("   " + t.toString());
+            if (this.pvm.isAfter(t.annaAloitus().toLocalDate())  &&  (this.pvm.isBefore(t.annaLopetus().toLocalDate()))  ||
+                this.pvm.isEqual(t.annaAloitus().toLocalDate())  ||
+                this.pvm.isEqual(t.annaLopetus().toLocalDate()))  {
+
+                System.out.print(Varit.GREEN);
+                System.out.println("  " + t.toStringLyhyt());
                 System.out.print(Varit.RESET);
             }
         }
-    }
 
-    public void tulostaTehtavat() {
-        System.out.println("!---------- " + this.pvm.getDayOfMonth() + ". p\u00E4iv\u00E4n teht\u00E4v\u00E4t --------------!");
-        if (eiTehtavia()) {
-            System.out.println("  Ei teht\u00E4vi\u00E4");
-        }
         for (Tehtava t : this.tehtavat) {
-            if (this.pvm.equals(t.annaPvm())) {
-                System.out.println("  - " + t.toString());
+            if (this.pvm.isEqual(t.annaAloitus().toLocalDate())) {
+                System.out.print(Varit.GREEN);
+                System.out.println("  " + t.toStringLyhyt());
+                System.out.print(Varit.RESET);
             }
         }
     }
 
     public void tulostaMuistutukset() {
-        System.out.println("!---------- " + Kuukaudet.annaKuukausi(this.pvm.getMonthValue()) + "n muistutukset ----------!");
-        ArrayList<Tapahtuma> kuukaudenTapahtumat = annaKuukaudenTapahtumat();
-        ArrayList<Tehtava> kuukaudenTehtavat = annaKuukaudenTehtavat();
-        
-        if (kuukaudenTapahtumat.isEmpty() && kuukaudenTehtavat.isEmpty()) {
-            System.out.println("  Ei muistettavaa, chill :)");
+        System.out.println("  --- " + Kuukaudet.annaKuukausi(this.pvm.getMonthValue()) + "n muistutukset ---");
+
+        if (annaKuukaudenTapahtumat().isEmpty() && annaKuukaudenTehtavat().isEmpty()) {
+            System.out.println("   Ei muistettavaa, chill :)");
             return;
         }
-        
-        for (Tapahtuma t : kuukaudenTapahtumat) {
-            if (t.muistutusOnPaalla()) {
-                System.out.println("   " + t.annaNimi() + " " + t.annaPaiva() + ". p\u00E4iv\u00E4");
-            }
-        }
-        for (Tehtava t : kuukaudenTehtavat) {
-            if (t.muistutusOnPaalla()) {
-                System.out.println("   " + t.annaNimi() + " " + t.annaPaiva() + ". p\u00E4iv\u00E4");
+
+        for (Tapahtuma t : annaKuukaudenTapahtumat()) {
+            if (t.onkoMuistutus()) {
+                System.out.println("   " + t.annaNimi() + ", " + t.annaAloitus().getDayOfMonth() + ". p\u00E4iv\u00E4");
             }
         }
 
-    }    
+        for (Tehtava t : annaKuukaudenTehtavat()) {
+            if (t.onkoMuistutus()) {
+                System.out.println("   " + t.annaNimi() + ", " + t.annaAloitus().getDayOfMonth() + ". p\u00E4iv\u00E4");
+            }
+        }
+    }
 }

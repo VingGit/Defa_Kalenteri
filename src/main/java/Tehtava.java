@@ -1,23 +1,50 @@
-import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
-/* Tapahtuma.class ja Tehtava.class ero on nyt käytännössä se, että tapahtumalla on aloitus- ja lopetusaika,
-   mutta tehtävällä vain aloitusaika
- */
+public class Tehtava extends Merkinta {
 
-public class Tehtava extends Tapahtuma {
-    
-    public Tehtava(LocalDate pvm) {
-        super(pvm);
+    private String muistiinpanot;
+
+    public Tehtava() {}
+
+    public Tehtava(String nimi) {
+        super(nimi);
     }
 
 
+
+    public void asetaMuistiinpano(String kuvaus) {
+        this.muistiinpanot = kuvaus;
+    }
+
+    public void poistaMuistiinpano() {
+        this.muistiinpanot = "";
+    }
+
+    public String toStringLyhyt() {
+        DateTimeFormatter formatter;
+        formatter = DateTimeFormatter.ofPattern("HH:mm");
+
+        String aika = this.alku.format(formatter);
+
+        return this.nimi + ", " + aika;
+    }
+
     @Override
     public String toString() {
-        String muistutus = "Ei muistutusta";
-        if (this.muistutus) {
-            muistutus = "Muistutus on päällä";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+
+        String muistutus;
+        if (this.muistutus != null) {
+            muistutus = "Muistutetaan" + this.muistutus.format(formatter);
+        } else {
+            muistutus = "Ei muistutusta";
         }
-        
-        return this.nimi + ", " + this.alku.toString() + ", " + muistutus;
+
+        String muistiinpanot = this.muistiinpanot;
+        if (muistiinpanot == null) {
+            muistiinpanot = "-";
+        }
+
+        return this.nimi + ", " + this.alku.format(formatter) + ", " + muistutus + "\n  Muistiinpanot: " + muistiinpanot;
     }
 }
