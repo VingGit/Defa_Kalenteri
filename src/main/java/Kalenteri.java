@@ -253,7 +253,7 @@ public class Kalenteri {
         // Tervehditään käyttäjää, kerrotaan viikonpäivä, päiväys sekä kellonaika.
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d.M.y");
         System.out.println("             Hei " + kayttajaEkaIso + "!");
-        System.out.println("     Tänään on " + Viikonpaivat.annaViikonpaiva(pvm.getDayOfWeek().getValue()) + " " + pvm.format(formatter));
+        System.out.println("     T\u00E4n\u00E4\u00E4n on " + Viikonpaivat.annaViikonpaiva(pvm.getDayOfWeek().getValue()) + " " + pvm.format(formatter));
         System.out.println("               " + aika);
     }
 
@@ -268,7 +268,7 @@ public class Kalenteri {
     public void tulostaPaivaNakyma() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d.M.y");
         System.out.println();
-        System.out.println("                 " + this.pvm.format(formatter));
+        System.out.println("                " + this.pvm.format(formatter));
         System.out.print("            ");
         tulostaJuhlapaiva();
         System.out.println();
@@ -286,7 +286,7 @@ public class Kalenteri {
             }
         }
 
-        System.out.println("  ------------ Tehtävät ------------ ");
+        System.out.println("  ------------ Teht\u00E4v\u00E4t ------------ ");
         for (Tehtava t : this.tehtavat) {
             if (this.pvm.isEqual(t.annaAloitus().toLocalDate())) {
                 System.out.print(Varit.GREEN);
@@ -311,12 +311,12 @@ public class Kalenteri {
     }
 
     public void tulostaMerkinnat() {
-        System.out.println("  ------ p\u00E4iv\u00E4n merkinnät ------");
+        System.out.println("  ------ p\u00E4iv\u00E4n merkinn\u00E4t ------");
 
         tulostaJuhlapaiva();
 
-        if (!onkoTapahtumia() && !onkoTehtavia() && !onkoJuhla()/* && !onkoMuistutuksia*/) {
-            System.out.println("   Ei merkintöjä");
+        if (!onkoTapahtumia() && !onkoTehtavia() && !onkoJuhla()) {
+            System.out.println("   Ei merkint\u00F6j\u00E4");
             return;
         }
 

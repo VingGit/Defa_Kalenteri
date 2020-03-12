@@ -117,7 +117,7 @@ public class Kayttoliittyma {
             tulostaPaivanakymaOhje();
             System.out.println();
 
-            System.out.print("Syöta komento: ");
+            System.out.print("Syöt\u00E4 komento: ");
             String syote = lukija.nextLine();
             if (syote.equals("c")) {
                 break;
@@ -209,7 +209,7 @@ public class Kayttoliittyma {
 
             case "c":
                 clrscr();
-                System.out.println("Et voi mennä tästä näkymästä taaksepäin.");
+                System.out.println("Et voi menn\u00E4 t\u00E4st\u00E4 n\u00E4kym\u00E4st\u00E4 taaksep\u00E4in.");
                 break;
 
             default:
@@ -250,7 +250,7 @@ public class Kayttoliittyma {
 
     private void vaihdaPaivamaaraa() {
         while (true) {
-            System.out.print("Anna päivämäärä (d ohje): ");
+            System.out.print("Anna p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4 (d ohje): ");
             String syote = this.lukija.nextLine();
             if (syote.equals("c")) {
                 break;
@@ -298,7 +298,7 @@ public class Kayttoliittyma {
                 // lopetusajan asetus
                 LocalDateTime lopetus;
                 while (true) {
-                    System.out.print("Kestääkö tapahtuma nykyisen päivän yli? (k/e): ");
+                    System.out.print("Kest\u00E4\u00E4k\u00F6 tapahtuma nykyisen p\u00E4iv\u00E4n yli? (k/e): ");
                     syote = lukija.nextLine();
                     if (syote.equals("k")) {
                         System.out.print("Anna lopetuspäivä: ");
@@ -389,7 +389,7 @@ public class Kayttoliittyma {
                 System.out.print("Haluatko muistutuksen? (k/e): ");
                 String vastaus = this.lukija.nextLine();
                 if (vastaus.equals("k")) {
-                    System.out.print("Milloin haluat muistutuksen? Asetetaan ensin päivä: ");
+                    System.out.print("Milloin haluat muistutuksen? Asetetaan ensin p\u00E4iv\u00E4: ");
                     syote = this.lukija.nextLine();
                     LocalDate pvm = syotePaivamaaraksi(syote);
 
@@ -443,7 +443,7 @@ public class Kayttoliittyma {
                 System.out.print("Haluatko muistutuksen? (k/e): ");
                 String vastaus = this.lukija.nextLine();
                 if (vastaus.equals("k")) {
-                    System.out.print("Milloin haluat muistutuksen? Asetetaan ensin päivä: ");
+                    System.out.print("Milloin haluat muistutuksen? Asetetaan ensin p\u00E4iv\u00E4: ");
                     syote = this.lukija.nextLine();
                     LocalDate pvm = syotePaivamaaraksi(syote);
 
@@ -466,7 +466,7 @@ public class Kayttoliittyma {
 
     private void poistaTapahtuma() {
         while (true) {
-            System.out.print("Kirjoita poistettavan tapahtuman nimi (paina d poistaaksesi kaikki): ");
+            System.out.print("Kirjoita poistettavan tapahtuman nimi (sy\u00F6t\u00E4 d poistaaksesi kaikki): ");
             String tapahtuma = lukija.nextLine();
             if (tapahtuma.equals("c")) {
                 break;
@@ -489,7 +489,7 @@ public class Kayttoliittyma {
 
     private void poistaTehtava() {
         while (true) {
-            System.out.print("Kirjoita poistettavan teht\u00E4v\u00E4n nimi (paina d poistaaksesi kaikki): ");
+            System.out.print("Kirjoita poistettavan teht\u00E4v\u00E4n nimi (syötä d poistaaksesi kaikki): ");
             String tehtava = lukija.nextLine();
             if (tehtava.equals("c")) {
                 break;
@@ -551,9 +551,9 @@ public class Kayttoliittyma {
                 flag = false;
 
             } catch (NumberFormatException e) {
-                System.out.print("Aseta kelvollinen päivämäärä (esim 4.10.2021): ");
+                System.out.print("Aseta kelvollinen p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4 (esim 4.10.2021): ");
             } catch (ArrayIndexOutOfBoundsException e) {
-                System.out.print("Aseta kelvollinen päivämäärä (esim 4.10.2021): ");
+                System.out.print("Aseta kelvollinen p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4 (esim 4.10.2021): ");
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
@@ -587,7 +587,7 @@ public class Kayttoliittyma {
         System.out.println("  d - liiku oikealle                    1 - lis\u00E4\u00E4 tapahtuma");
         System.out.println("  a - liiku vasemmalle                  2 - lis\u00E4\u00E4 teht\u00E4v\u00E4");
         System.out.println("  w - liiku yl\u00F6s                        3 - tarkastele p\u00E4iv\u00E4\u00E4");
-        System.out.println("  s - liikus alas                       4 - näytä vuosinäkymä - KESKEN");
+        System.out.println("  s - liikus alas                       4 - n\u00E4yt\u00E4 vuosin\u00E4kym\u00E4 - KESKEN");
         System.out.println("  e - seuraava kuukausi                 c - mene taaksep\u00E4in");
         System.out.println("  q - edellinen kuukausi                x - lopeta");
         System.out.println("  ee - seuraava vuosi                   v - piilota komennot");
@@ -609,6 +609,6 @@ public class Kayttoliittyma {
         System.out.println("2 - lis\u00E4\u00E4 teht\u00E4v\u00E4");
         System.out.println("3 - poista tapahtuma");
         System.out.println("4 - poista tehtava");
-        System.out.println("c - takaisin kuukausinäkymään");
+        System.out.println("c - takaisin kuukausin\u00E4kym\u00E4\u00E4n");
     }
 }
