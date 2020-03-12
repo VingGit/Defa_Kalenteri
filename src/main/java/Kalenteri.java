@@ -258,7 +258,7 @@ public class Kalenteri {
     }
 
     public void tulostaVuosiNakyma() {
-        System.out.println("Ei toimi vielä");
+        KalenteriNakyma.tulostaVuosi(this.pvm.getDayOfMonth(), this.pvm.getMonthValue(), this.pvm.getYear(), this.pvm.getDayOfWeek(), this.juhlat, this.tapahtumat, this.tehtavat);
     }
 
     public void tulostaKuukausiNakyma() {
@@ -266,16 +266,14 @@ public class Kalenteri {
     }
 
     public void tulostaPaivaNakyma() {
-        //KalenteriNakyma.tulostaPaiva( this.pvm.getDayOfMonth(), this.pvm.getMonthValue(), this.pvm.getYear(), this.pvm.getDayOfWeek(), this.juhlat, this.tapahtumat );
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d.M.y");
         System.out.println();
         System.out.println("                 " + this.pvm.format(formatter));
         System.out.print("            ");
         tulostaJuhlapaiva();
-
         System.out.println();
-        System.out.println("  ------------ Tapahtumat ----------- ");
 
+        System.out.println("  ------------ Tapahtumat ----------- ");
         for (Tapahtuma t : this.tapahtumat) {
             if (this.pvm.isAfter(t.annaAloitus().toLocalDate())  &&  (this.pvm.isBefore(t.annaLopetus().toLocalDate()))  ||
                 this.pvm.isEqual(t.annaAloitus().toLocalDate())  ||
@@ -289,7 +287,6 @@ public class Kalenteri {
         }
 
         System.out.println("  ------------ Tehtävät ------------ ");
-
         for (Tehtava t : this.tehtavat) {
             if (this.pvm.isEqual(t.annaAloitus().toLocalDate())) {
                 System.out.print(Varit.GREEN);
@@ -347,7 +344,7 @@ public class Kalenteri {
         System.out.println("  --- " + Kuukaudet.annaKuukausi(this.pvm.getMonthValue()) + "n muistutukset ---");
 
         if (annaKuukaudenTapahtumat().isEmpty() && annaKuukaudenTehtavat().isEmpty()) {
-            System.out.println("   Ei muistettavaa, chill :)");
+            System.out.println("  Ei muistettavaa, chill :)");
             return;
         }
 

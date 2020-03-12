@@ -14,6 +14,7 @@ public class Kayttoliittyma {
     private  Scanner lukija;
     private  Kalenteri kalenteri;
     private boolean tulostaKomentoOhje;
+    private boolean tulostaKuukausinakyma;
     
     public Kayttoliittyma(Scanner lukija, Kalenteri kalenteri) {
         this.kalenteri = kalenteri;
@@ -30,6 +31,8 @@ public class Kayttoliittyma {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        this.tulostaKuukausinakyma = true;
     }
 
 
@@ -39,8 +42,14 @@ public class Kayttoliittyma {
             this.kalenteri.tulostaTervehdysJaKello();
             System.out.println("");
 
-            this.kalenteri.tulostaKuukausiNakyma();
-            System.out.println("");
+            if (this.tulostaKuukausinakyma) {
+                this.kalenteri.tulostaKuukausiNakyma();
+                System.out.println("");
+            } else {
+                this.kalenteri.tulostaVuosiNakyma();
+                System.out.println("");
+            }
+
 
             this.kalenteri.tulostaMerkinnat();
             System.out.println("");
@@ -188,7 +197,9 @@ public class Kayttoliittyma {
 
             case "4":
                 clrscr();
+                this.tulostaKuukausinakyma = false;
                 this.kalenteri.tulostaVuosiNakyma();
+
                 break;
 
             case "v":
@@ -576,7 +587,7 @@ public class Kayttoliittyma {
         System.out.println("  d - liiku oikealle                    1 - lis\u00E4\u00E4 tapahtuma");
         System.out.println("  a - liiku vasemmalle                  2 - lis\u00E4\u00E4 teht\u00E4v\u00E4");
         System.out.println("  w - liiku yl\u00F6s                        3 - tarkastele p\u00E4iv\u00E4\u00E4");
-        System.out.println("  s - liikus alas                       4 - näytä vuosinäkymä");
+        System.out.println("  s - liikus alas                       4 - näytä vuosinäkymä - KESKEN");
         System.out.println("  e - seuraava kuukausi                 c - mene taaksep\u00E4in");
         System.out.println("  q - edellinen kuukausi                x - lopeta");
         System.out.println("  ee - seuraava vuosi                   v - piilota komennot");
