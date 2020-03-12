@@ -11,19 +11,19 @@ public abstract class Juhlapyhat {
     public static Map asetaJuhlat(HashMap juhlat, int vuosi) {
         Map<LocalDate, String> juhlatpaivat = new HashMap<LocalDate, String>();
 
-        juhlat.put(LocalDate.of(vuosi, 1, 1), "Uuudenvuodenpäivä");
+        juhlat.put(LocalDate.of(vuosi, 1, 1), "Uuudenvuodenp\u00E4iv\u00E4");
         juhlat.put(LocalDate.of(vuosi, 1, 6), "Loppiainen");
-        juhlat.put(laskePitkaperjantai(vuosi), "Pitkäperjantai");
-        juhlat.put(laskePaasiainen(vuosi), "Pääsiäispäivä");
-        juhlat.put(laske2Pääsiäinen(vuosi), "2. pääsiäispäivä");
+        juhlat.put(laskePitkaperjantai(vuosi), "Pitk\u00E4perjantai");
+        juhlat.put(laskePaasiainen(vuosi), "P\u00E4\u00E4si\u00E4isp\u00E4iv\u00E4");
+        juhlat.put(laske2Pääsiäinen(vuosi), "2. p\u00E4\u00E4si\u00E4isp\u00E4iv\u00E4");
         juhlat.put(LocalDate.of(vuosi, 5, 1), "Vappu");
         juhlat.put(laskeHelatorstai(vuosi), "Helatorstai");
-        juhlat.put(laskeHelluntai(vuosi), "Helluntaipäivä");
-        juhlat.put(laskeJuhannus(vuosi), "Juhannuspäivä");
-        juhlat.put(laskePyhainpaiva(vuosi), "Pyhäinpäivä");
-        juhlat.put(LocalDate.of(vuosi, 12, 6), "Itsenäisyyspäivä");
-        juhlat.put(LocalDate.of(vuosi, 12, 25), "Joulupäivä");
-        juhlat.put(LocalDate.of(vuosi, 12, 26), "2. joulupäivä");
+        juhlat.put(laskeHelluntai(vuosi), "Helluntaip\u00E4iv\u00E4");
+        juhlat.put(laskeJuhannus(vuosi), "Juhannusp\u00E4iv\u00E4");
+        juhlat.put(laskePyhainpaiva(vuosi), "Pyh\u00E4inp\u00E4iv\u00E4");
+        juhlat.put(LocalDate.of(vuosi, 12, 6), "Itsen\u00E4isyysp\u00E4iv\u00E4");
+        juhlat.put(LocalDate.of(vuosi, 12, 25), "Joulup\u00E4iv\u00E4");
+        juhlat.put(LocalDate.of(vuosi, 12, 26), "2. joulup\u00E4iv\u00E4d");
 
         return juhlatpaivat;
     }

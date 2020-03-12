@@ -7,6 +7,11 @@ public class Main {
         Scanner lukija = new Scanner(System.in);
         Kayttoliittyma liittyma = new Kayttoliittyma(lukija, kalenteri);
 
+        // estetään värien tulostuksesta syntyvä bugi
+        liittyma.kasitteleKomento("w");
+        liittyma.kasitteleKomento("s");
+
         liittyma.kaynnista();
+
     }
 }

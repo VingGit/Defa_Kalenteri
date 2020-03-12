@@ -39,10 +39,6 @@ public class Kayttoliittyma {
 
     public void kaynnista() {
         while (true) {
-            // estetään värin tulostamisesta johtuva bugi
-            kasitteleKomento("a");
-            kasitteleKomento("d");
-
             this.kalenteri.tulostaTervehdysJaKello();
             System.out.println("");
 
@@ -66,9 +62,9 @@ public class Kayttoliittyma {
                 System.out.println("");
             }
 
-            String aloitus = "Kirjoita komento t\u00E4h\u00E4n ja paina ENTER: ";
+            String aloitus = "  Kirjoita komento t\u00E4h\u00E4n ja paina ENTER: ";
             if (!tulostaKomentoOhje) {
-                aloitus = "Kirjoita komento t\u00E4h\u00E4n ja paina ENTER (v - n\u00E4yt\u00E4 komennot): ";
+                aloitus = "  Kirjoita komento t\u00E4h\u00E4n ja paina ENTER (v - n\u00E4yt\u00E4 komennot): ";
             }
             System.out.print(aloitus);
 
@@ -103,7 +99,7 @@ public class Kayttoliittyma {
                     ioe.printStackTrace();
                 }
 
-                System.out.println("Mukavaa p\u00E4iv\u00E4njatkoa! :)");
+                System.out.println("  Mukavaa p\u00E4iv\u00E4njatkoa! :)");
                 break;
             }
 
@@ -121,9 +117,10 @@ public class Kayttoliittyma {
             tulostaPaivanakymaOhje();
             System.out.println();
 
-            System.out.print("Syöt\u00E4 komento: ");
+            System.out.print("  Syöt\u00E4 komento: ");
             String syote = lukija.nextLine();
             if (syote.equals("c")) {
+                clrscr();
                 break;
             }
 
@@ -213,12 +210,12 @@ public class Kayttoliittyma {
 
             case "c":
                 clrscr();
-                System.out.println("Et voi menn\u00E4 t\u00E4st\u00E4 n\u00E4kym\u00E4st\u00E4 taaksep\u00E4in.");
+                System.out.println("  Et voi menn\u00E4 t\u00E4st\u00E4 n\u00E4kym\u00E4st\u00E4 taaksep\u00E4in.");
                 break;
 
             default:
                 clrscr();
-                System.out.println("Komentoa ei ole olemassa. Yrit\u00E4 uudelleen.");
+                System.out.println("  Komentoa ei ole olemassa. Yrit\u00E4 uudelleen.");
                 break;
         }
     }
@@ -247,14 +244,14 @@ public class Kayttoliittyma {
 
             default:
                 clrscr();
-                System.out.println("Komentoa ei ole olemassa. Yrit\u00E4 uudelleen.");
+                System.out.println("  Komentoa ei ole olemassa. Yrit\u00E4 uudelleen.");
                 break;
         }
     }
 
     private void vaihdaPaivamaaraa() {
         while (true) {
-            System.out.print("Anna p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4 (d ohje): ");
+            System.out.print("  Anna p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4 (d ohje): ");
             String syote = this.lukija.nextLine();
             if (syote.equals("c")) {
                 break;
@@ -273,7 +270,7 @@ public class Kayttoliittyma {
     private void lisaaTapahtuma() {
         String syote;
         while (true) {
-            System.out.print("Nime\u00E4 tapahtuma: ");
+            System.out.print("  Nime\u00E4 tapahtuma: ");
             syote = lukija.nextLine();
             if (syote.equals("c")) {
                 break;
@@ -285,7 +282,7 @@ public class Kayttoliittyma {
             // aloitussajan asetus
             LocalDateTime aloitus = LocalDateTime.of(this.kalenteri.annaPvm().getYear(), this.kalenteri.annaPvm().getMonth().getValue(), this.kalenteri.annaPvm().getDayOfMonth(), 0, 0);
             while (true) {
-                System.out.print("Aseta alkamisaika. Sy\u00F6t\u00E4 a jos tapahtuma kest\u00E4\u00E4 koko p\u00E4iv\u00E4n: ");
+                System.out.print("  Aseta alkamisaika. Sy\u00F6t\u00E4 a jos tapahtuma kest\u00E4\u00E4 koko p\u00E4iv\u00E4n: ");
                 syote = lukija.nextLine();
                 if (syote.equals("a")) {
                     tapahtuma.asetaAloitus(aloitus);
@@ -302,21 +299,21 @@ public class Kayttoliittyma {
                 // lopetusajan asetus
                 LocalDateTime lopetus;
                 while (true) {
-                    System.out.print("Kest\u00E4\u00E4k\u00F6 tapahtuma nykyisen p\u00E4iv\u00E4n yli? (k/e): ");
+                    System.out.print("  Kest\u00E4\u00E4k\u00F6 tapahtuma nykyisen p\u00E4iv\u00E4n yli? (k/e): ");
                     syote = lukija.nextLine();
                     if (syote.equals("k")) {
-                        System.out.print("Anna lopetuspäivä: ");
+                        System.out.print("  Anna lopetuspäivä: ");
                         syote = lukija.nextLine();
                         LocalDate lopetusPvm = syotePaivamaaraksi(syote);
 
-                        System.out.print("Anna lopetusaika: ");
+                        System.out.print("  Anna lopetusaika: ");
                         syote = lukija.nextLine();
                         LocalTime lopetusAika = syoteKellonajaksi(syote);
 
                         lopetus = LocalDateTime.of(lopetusPvm, lopetusAika);
 
                         if (lopetus.isBefore(aloitus)) {
-                            System.out.println("Lopetusaika on ennen aloitusaikaa! Syötö kelvollinen lopetusaika!");
+                            System.out.println("  Lopetusaika on ennen aloitusaikaa! Syötö kelvollinen lopetusaika!");
                             continue;
                         }
 
@@ -324,7 +321,7 @@ public class Kayttoliittyma {
                         break;
 
                     } else if (syote.equals("e")) {
-                        System.out.print("Anna lopetusaika: ");
+                        System.out.print("  Anna lopetusaika: ");
                         syote = lukija.nextLine();
                         LocalTime lopetusAika = syoteKellonajaksi(syote);
 
@@ -340,10 +337,10 @@ public class Kayttoliittyma {
 
             // kuvauksen asetus
             while (true) {
-                System.out.print("Haluatko asettaa tapahtumalle kuvauksen? (k/e): ");
+                System.out.print("  Haluatko asettaa tapahtumalle kuvauksen? (k/e): ");
                 syote = this.lukija.nextLine();
                 if (syote.equals("k")) {
-                    System.out.print("Kirjoita kuvaus: ");
+                    System.out.print("  Kirjoita kuvaus: ");
                     syote = this.lukija.nextLine();
                     tapahtuma.asetaKuvaus(syote);
                     break;
@@ -355,11 +352,11 @@ public class Kayttoliittyma {
             // osallistujien asetus
             boolean flag= true;
             while (flag) {
-                System.out.print("Haluatko lis\u00E4t\u00E4 osallistuvat henkil\u00F6t? (k/e): ");
+                System.out.print("  Haluatko lis\u00E4t\u00E4 osallistuvat henkil\u00F6t? (k/e): ");
                 syote = this.lukija.nextLine();
                 if (syote.equals("k")) {
                     while (true) {
-                        System.out.print("Anna osallistujan nimi (e lopeta): ");
+                        System.out.print("  Anna osallistujan nimi (e lopeta): ");
                         syote = this.lukija.nextLine();
                         if (syote.equals("e")) {
                             flag = false;
@@ -375,10 +372,10 @@ public class Kayttoliittyma {
 
             // paikan asetus
             while (true) {
-                System.out.print("Haluatko lis\u00E4t\u00E4 paikan? (k/e): ");
+                System.out.print("  Haluatko lis\u00E4t\u00E4 paikan? (k/e): ");
                 syote = this.lukija.nextLine();
                 if (syote.equals("k")) {
-                    System.out.print("Sy\u00F6t\u00E4 paikan nimi: ");
+                    System.out.print("  Sy\u00F6t\u00E4 paikan nimi: ");
                     syote = this.lukija.nextLine();
                     tapahtuma.lisaaPaikka(syote);
                     break;
@@ -390,14 +387,14 @@ public class Kayttoliittyma {
 
             // muistutuksen asetus
             while (true) {
-                System.out.print("Haluatko muistutuksen? (k/e): ");
+                System.out.print("  Haluatko muistutuksen? (k/e): ");
                 String vastaus = this.lukija.nextLine();
                 if (vastaus.equals("k")) {
-                    System.out.print("Milloin haluat muistutuksen? Asetetaan ensin p\u00E4iv\u00E4: ");
+                    System.out.print("  Milloin haluat muistutuksen? Asetetaan ensin p\u00E4iv\u00E4: ");
                     syote = this.lukija.nextLine();
                     LocalDate pvm = syotePaivamaaraksi(syote);
 
-                    System.out.print("Seuraavaksi kellonaika: ");
+                    System.out.print("  Seuraavaksi kellonaika: ");
                     syote = this.lukija.nextLine();
                     LocalTime aika = syoteKellonajaksi(syote);
 
@@ -417,7 +414,7 @@ public class Kayttoliittyma {
     private void lisaaTehtava() {
         String syote;
         while (true) {
-            System.out.print("Nime\u00E4 teht\u00E4v\u00E4: ");
+            System.out.print("  Nime\u00E4 teht\u00E4v\u00E4: ");
             syote = lukija.nextLine();
             if (syote.equals("c")) {
                 break;
@@ -425,16 +422,16 @@ public class Kayttoliittyma {
 
             Tehtava tehtava = new Tehtava(syote);
 
-            System.out.print("Aseta kellonaika: ");
+            System.out.print("  Aseta kellonaika: ");
             syote = lukija.nextLine();
             LocalTime aika = syoteKellonajaksi(syote);
             tehtava.asetaAloitus(this.kalenteri.annaPvm().getYear(), this.kalenteri.annaPvm().getMonthValue(), this.kalenteri.annaPvm().getDayOfMonth(), aika.getHour(), aika.getMinute());
 
             while (true) {
-                System.out.print("Haluatko asettaa muistiinpanoja (k/e): ");
+                System.out.print("  Haluatko asettaa muistiinpanoja (k/e): ");
                 String vastaus = lukija.nextLine();
                 if (vastaus.equals("k")) {
-                    System.out.print("Kirjoita muistiinpanot: ");
+                    System.out.print("  Kirjoita muistiinpanot: ");
                     String muistiinpanot = lukija.nextLine();
                     tehtava.asetaMuistiinpano(muistiinpanot);
                     break;
@@ -444,14 +441,14 @@ public class Kayttoliittyma {
             }
 
             while (true) {
-                System.out.print("Haluatko muistutuksen? (k/e): ");
+                System.out.print("  Haluatko muistutuksen? (k/e): ");
                 String vastaus = this.lukija.nextLine();
                 if (vastaus.equals("k")) {
-                    System.out.print("Milloin haluat muistutuksen? Asetetaan ensin p\u00E4iv\u00E4: ");
+                    System.out.print("  Milloin haluat muistutuksen? Asetetaan ensin p\u00E4iv\u00E4: ");
                     syote = this.lukija.nextLine();
                     LocalDate pvm = syotePaivamaaraksi(syote);
 
-                    System.out.print("Seuraavaksi kellonaika: ");
+                    System.out.print("  Seuraavaksi kellonaika: ");
                     syote = this.lukija.nextLine();
                     aika = syoteKellonajaksi(syote);
 
@@ -470,7 +467,7 @@ public class Kayttoliittyma {
 
     private void poistaTapahtuma() {
         while (true) {
-            System.out.print("Kirjoita poistettavan tapahtuman nimi (sy\u00F6t\u00E4 d poistaaksesi kaikki): ");
+            System.out.print("  Kirjoita poistettavan tapahtuman nimi (sy\u00F6t\u00E4 d poistaaksesi kaikki): ");
             String tapahtuma = lukija.nextLine();
             if (tapahtuma.equals("c")) {
                 break;
@@ -478,14 +475,14 @@ public class Kayttoliittyma {
 
             if (tapahtuma.equals("d")) {
                 this.kalenteri.poistaPaivanTapahtumat();
-                System.out.println("Kaikki tapahtumat poistettu!");
+                System.out.println("  Kaikki tapahtumat poistettu!");
                 break;
             }
 
             if (this.kalenteri.poistaTapahtuma(tapahtuma)) {
-                System.out.println("Tapahtuma poistettiin.");
+                System.out.println("  Tapahtuma poistettiin.");
             } else {
-                System.out.println("Tapahtumaa ei ole olemassa. Tarkista kirjoitusvirheet!");
+                System.out.println("  Tapahtumaa ei ole olemassa. Tarkista kirjoitusvirheet!");
             }
             break;
         }
@@ -493,7 +490,7 @@ public class Kayttoliittyma {
 
     private void poistaTehtava() {
         while (true) {
-            System.out.print("Kirjoita poistettavan teht\u00E4v\u00E4n nimi (syötä d poistaaksesi kaikki): ");
+            System.out.print("  Kirjoita poistettavan teht\u00E4v\u00E4n nimi (syötä d poistaaksesi kaikki): ");
             String tehtava = lukija.nextLine();
             if (tehtava.equals("c")) {
                 break;
@@ -501,14 +498,14 @@ public class Kayttoliittyma {
 
             if (tehtava.equals("d")) {
                 this.kalenteri.poistaPaivanTehtavat();
-                System.out.println("Kaikki teht\u00E4v\u00E4t poistettu!");
+                System.out.println("  Kaikki teht\u00E4v\u00E4t poistettu!");
                 break;
             }
 
             if (this.kalenteri.poistaTehtava(tehtava)) {
-                System.out.println("Teht\u00E4v\u00E4 poistettiin.");
+                System.out.println("  Teht\u00E4v\u00E4 poistettiin.");
             } else {
-                System.out.println("Tehtav\u00E4\u00E4 ei ole olemassa. Tarkista kirjoitusvirheet!");
+                System.out.println("  Tehtav\u00E4\u00E4 ei ole olemassa. Tarkista kirjoitusvirheet!");
             }
             break;
         }
@@ -526,11 +523,11 @@ public class Kayttoliittyma {
                 flag = false;
 
             } catch (NumberFormatException e) {
-                System.out.print("Aseta kelvollinen kellonaika (esim 7.45): ");
+                System.out.print("  Aseta kelvollinen kellonaika (esim 7.45): ");
             } catch (ArrayIndexOutOfBoundsException e) {
-                System.out.print("Aseta kelvollinen kellonaika (esim 7.45): ");
+                System.out.print("  Aseta kelvollinen kellonaika (esim 7.45): ");
             } catch (DateTimeException e) {
-                System.out.print("Aseta kelvollinen kellonaika (esim 7.45): ");
+                System.out.print("  Aseta kelvollinen kellonaika (esim 7.45): ");
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
@@ -555,9 +552,9 @@ public class Kayttoliittyma {
                 flag = false;
 
             } catch (NumberFormatException e) {
-                System.out.print("Aseta kelvollinen p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4 (esim 4.10.2021): ");
+                System.out.print("  Aseta kelvollinen p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4 (esim 4.10.2021): ");
             } catch (ArrayIndexOutOfBoundsException e) {
-                System.out.print("Aseta kelvollinen p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4 (esim 4.10.2021): ");
+                System.out.print("  Aseta kelvollinen p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4 (esim 4.10.2021): ");
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
@@ -587,32 +584,32 @@ public class Kayttoliittyma {
     }
 
     public void tulostaKomentoOhje() {
-        System.out.println("---- Liikkumiskomennot -----         ----------- Muut komennot -----------");
-        System.out.println("  d - liiku oikealle                    1 - lis\u00E4\u00E4 tapahtuma");
-        System.out.println("  a - liiku vasemmalle                  2 - lis\u00E4\u00E4 teht\u00E4v\u00E4");
-        System.out.println("  w - liiku yl\u00F6s                        3 - tarkastele p\u00E4iv\u00E4\u00E4");
-        System.out.println("  s - liikus alas                       4 - n\u00E4yt\u00E4 vuosin\u00E4kym\u00E4 - KESKEN");
-        System.out.println("  e - seuraava kuukausi                 c - mene taaksep\u00E4in");
-        System.out.println("  q - edellinen kuukausi                x - lopeta");
-        System.out.println("  ee - seuraava vuosi                   v - piilota komennot");
-        System.out.println("  qq - edellinen vuosi");
-        System.out.println("  p - vaihda p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4\u00E4");
-        System.out.println("  t - t\u00E4m\u00E4 p\u00E4iv\u00E4");
+        System.out.println("  ---- Liikkumiskomennot -----         ----------- Muut komennot -----------");
+        System.out.println("   d - liiku oikealle                    1 - lis\u00E4\u00E4 tapahtuma");
+        System.out.println("   a - liiku vasemmalle                  2 - lis\u00E4\u00E4 teht\u00E4v\u00E4");
+        System.out.println("   w - liiku yl\u00F6s                        3 - tarkastele p\u00E4iv\u00E4\u00E4");
+        System.out.println("   s - liikus alas                       4 - n\u00E4yt\u00E4 vuosin\u00E4kym\u00E4 - KESKEN");
+        System.out.println("   e - seuraava kuukausi                 c - mene taaksep\u00E4in");
+        System.out.println("   q - edellinen kuukausi                x - lopeta");
+        System.out.println("   ee - seuraava vuosi                   v - piilota komennot");
+        System.out.println("   qq - edellinen vuosi");
+        System.out.println("   p - vaihda p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4\u00E4");
+        System.out.println("   t - t\u00E4m\u00E4 p\u00E4iv\u00E4");
 
     }
 
     public void tulostaPvmVaihtoOhje() {
-        System.out.println("Voit vaihtaa koko p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4n sy\u00F6tt\u00E4m\u00E4ll\u00E4 esim. 10.12.2016");
-        System.out.println("Jos haluat vaihtaa vain p\u00E4iv\u00E4\u00E4 ja kuukautta, sy\u00F6t\u00E4 esim 10.12.");
-        System.out.println("Jos haluat vaihtaa vain p\u00E4iv\u00E4\u00E4, sy\u00F6t\u00E4 esim. 10");
+        System.out.println("  Voit vaihtaa koko p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4n sy\u00F6tt\u00E4m\u00E4ll\u00E4 esim. 10.12.2016");
+        System.out.println("  Jos haluat vaihtaa vain p\u00E4iv\u00E4\u00E4 ja kuukautta, sy\u00F6t\u00E4 esim 10.12.");
+        System.out.println("  Jos haluat vaihtaa vain p\u00E4iv\u00E4\u00E4, sy\u00F6t\u00E4 esim. 10");
     }
 
     public void tulostaPaivanakymaOhje() {
-        System.out.println("------- Komennot ---------");
-        System.out.println("1 - lis\u00E4\u00E4 tapahtuma");
-        System.out.println("2 - lis\u00E4\u00E4 teht\u00E4v\u00E4");
-        System.out.println("3 - poista tapahtuma");
-        System.out.println("4 - poista tehtava");
-        System.out.println("c - takaisin kuukausin\u00E4kym\u00E4\u00E4n");
+        System.out.println("  ------- Komennot ---------");
+        System.out.println("  1 - lis\u00E4\u00E4 tapahtuma");
+        System.out.println("  2 - lis\u00E4\u00E4 teht\u00E4v\u00E4");
+        System.out.println("  3 - poista tapahtuma");
+        System.out.println("  4 - poista tehtava");
+        System.out.println("  c - takaisin kuukausin\u00E4kym\u00E4\u00E4n");
     }
 }

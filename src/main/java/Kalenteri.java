@@ -153,16 +153,41 @@ public class Kalenteri {
      */
 
     public void liikuVasemmalle() {
-        if (this.pvm.getDayOfMonth() == 1 || this.pvm.getDayOfWeek().getValue() == 1) {
+        if (this.pvm.getDayOfMonth() == 1) {
+            this.pvm = this.pvm.plusDays(7 - this.pvm.getDayOfWeek().getValue());
             return;
         }
+
+        if (this.pvm.getDayOfWeek().getValue() == 1) {
+            if (this.pvm.getDayOfMonth() + 6 > this.pvm.lengthOfMonth()) {
+                this.pvm = this.pvm.plusDays((this.pvm.lengthOfMonth() - this.pvm.getDayOfMonth()));
+            } else {
+                this.pvm = this.pvm.plusDays(6);
+            }
+            return;
+        }
+
         this.pvm = this.pvm.minusDays(1);
     }
     
     public void liikuOikealle() {
-        if (this.pvm.getDayOfMonth() == this.pvm.lengthOfMonth() || this.pvm.getDayOfWeek().getValue() == 7) {
+        /*if (this.pvm.getDayOfMonth() == this.pvm.lengthOfMonth() || this.pvm.getDayOfWeek().getValue() == 7) {
+            return;
+        }*/
+        if (this.pvm.getDayOfMonth() == this.pvm.lengthOfMonth()) {
+            this.pvm = this.pvm.minusDays(this.pvm.getDayOfWeek().getValue() - 1);
             return;
         }
+
+        if (this.pvm.getDayOfWeek().getValue() == 7) {
+            if (this.pvm.getDayOfMonth() < 7) {
+                this.pvm = this.pvm.minusDays(this.pvm.getDayOfMonth() - 1);
+            } else {
+                this.pvm = this.pvm.minusDays(6);
+            }
+            return;
+        }
+
         this.pvm = this.pvm.plusDays(1);
     }
 
