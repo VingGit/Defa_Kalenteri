@@ -39,6 +39,9 @@ public class Kayttoliittyma {
 
     public void kaynnista() {
         while (true) {
+            kasitteleKomento("a");
+            kasitteleKomento("d");
+
             this.kalenteri.tulostaTervehdysJaKello();
             System.out.println("");
 

@@ -344,7 +344,7 @@ public class Kalenteri {
         System.out.println("  --- " + Kuukaudet.annaKuukausi(this.pvm.getMonthValue()) + "n muistutukset ---");
 
         if (annaKuukaudenTapahtumat().isEmpty() && annaKuukaudenTehtavat().isEmpty()) {
-            System.out.println("  Ei muistettavaa, chill :)");
+            System.out.println("   Ei muistettavaa, chill :)");
             return;
         }
 
