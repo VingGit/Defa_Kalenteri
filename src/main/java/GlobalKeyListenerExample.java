@@ -1,4 +1,4 @@
-/*
+
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 import org.jnativehook.keyboard.NativeKeyEvent;
@@ -39,4 +39,3 @@ public class GlobalKeyListenerExample implements NativeKeyListener {
         GlobalScreen.addNativeKeyListener(new GlobalKeyListenerExample());
     }
 }
-*/

@@ -7,8 +7,10 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="jnativehook" />
-        <module name="Defa_Kalenteri" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="jnativehook" target="13" />
+    </bytecodeTargetLevel>
   </component>
 </project>
