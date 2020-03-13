@@ -4,10 +4,20 @@ import org.jnativehook.NativeHookException;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
 
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+
+
 public class GlobalKeyListenerExample implements NativeKeyListener {
+
     public void nativeKeyPressed(NativeKeyEvent e) {
         System.out.println("Key Pressed: " + NativeKeyEvent.getKeyText(e.getKeyCode()));
+        Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
+        logger.setLevel(Level.OFF);
 
+// Don't forget to disable the parent handlers.
+        logger.setUseParentHandlers(false);
         if (e.getKeyCode() == NativeKeyEvent.VC_ESCAPE) {
             try {
                 GlobalScreen.unregisterNativeHook();
@@ -17,15 +27,23 @@ public class GlobalKeyListenerExample implements NativeKeyListener {
         }
     }
 
+
+
     public void nativeKeyReleased(NativeKeyEvent e) {
-        System.out.println("Key Released: " + NativeKeyEvent.getKeyText(e.getKeyCode()));
+
     }
 
     public void nativeKeyTyped(NativeKeyEvent e) {
+
         System.out.println("Key Typed: " + NativeKeyEvent.getKeyText(e.getKeyCode()));
     }
 
     public static void main(String[] args) {
+        Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
+        logger.setLevel(Level.OFF);
+
+// Don't forget to disable the parent handlers.
+        logger.setUseParentHandlers(false);
         try {
             GlobalScreen.registerNativeHook();
         }
