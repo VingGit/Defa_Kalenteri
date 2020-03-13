@@ -189,16 +189,52 @@ public class Kalenteri {
     }
 
     public void liikuYlos() {
-        if (this.pvm.getDayOfMonth() < 7) {
+        if (this.pvm.getDayOfMonth() <= 7) {
+            if (this.pvm.lengthOfMonth() == 31 && this.pvm.getDayOfMonth() <= 3 ||
+                this.pvm.lengthOfMonth() == 30 && this.pvm.getDayOfMonth() <= 2 ||
+                this.pvm.lengthOfMonth() == 29 && this.pvm.getDayOfMonth() == 1) {
+                this.pvm = this.pvm.plusDays(28);
+                return;
+            }
+
+            this.pvm = this.pvm.plusDays(21);
             return;
         }
+
         this.pvm = this.pvm.minusDays(7);
     }
 
     public void liikuAlas() {
-        if (this.pvm.getDayOfMonth() > this.pvm.lengthOfMonth() - 7) {
+        if (this.pvm.lengthOfMonth() == 31 && this.pvm.getDayOfMonth() >= 25) {
+            if (this.pvm.getDayOfMonth() >= 29) {
+                this.pvm = this.pvm.minusDays(28);
+                return;
+            }
+
+            this.pvm = this.pvm.minusDays(21);
             return;
         }
+
+        if (this.pvm.lengthOfMonth() == 30 && this.pvm.getDayOfMonth() >= 24) {
+            if (this.pvm.getDayOfMonth() >= 29) {
+                this.pvm = this.pvm.minusDays(28);
+                return;
+            }
+
+            this.pvm = this.pvm.minusDays(21);
+            return;
+        }
+
+        if (this.pvm.lengthOfMonth() == 29 && this.pvm.getDayOfMonth() >= 23) {
+            if (this.pvm.getDayOfMonth() >= 29) {
+                this.pvm = this.pvm.minusDays(28);
+                return;
+            }
+
+            this.pvm = this.pvm.minusDays(21);
+            return;
+        }
+
         this.pvm = this.pvm.plusDays(7);
     }
     
