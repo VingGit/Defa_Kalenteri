@@ -40,7 +40,7 @@ public class GlobalKeyListenerExample implements NativeKeyListener {
 
     public static void main(String[] args) {
         Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
-        logger.setLevel(Level.OFF);
+        logger.setLevel(Level.OFF) ;
 
 // Don't forget to disable the parent handlers.
         logger.setUseParentHandlers(false);
