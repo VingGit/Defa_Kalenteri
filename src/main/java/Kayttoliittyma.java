@@ -1,3 +1,8 @@
+import org.jnativehook.GlobalScreen;
+import org.jnativehook.NativeHookException;
+import org.jnativehook.keyboard.NativeKeyEvent;
+import org.jnativehook.keyboard.NativeKeyListener;
+
 import java.io.*;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
@@ -8,8 +13,10 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class Kayttoliittyma {
+public class Kayttoliittyma implements NativeKeyListener {
 
     private  Scanner lukija;
     private  Kalenteri kalenteri;
@@ -38,7 +45,7 @@ public class Kayttoliittyma {
 
 
     public void kaynnista() {
-        while (true) {
+        //while (true) {
             this.kalenteri.tulostaTervehdysJaKello();
             System.out.println("");
 
@@ -49,7 +56,6 @@ public class Kayttoliittyma {
                 this.kalenteri.tulostaVuosiNakyma();
                 System.out.println("");
             }
-
 
             this.kalenteri.tulostaMerkinnat();
             System.out.println("");
@@ -62,12 +68,12 @@ public class Kayttoliittyma {
                 System.out.println("");
             }
 
-            String aloitus = "  Kirjoita komento t\u00E4h\u00E4n ja paina ENTER: ";
+            String aloitus = "  Paina kirjainta tai numeroa ";
             if (!tulostaKomentoOhje) {
-                aloitus = "  Kirjoita komento t\u00E4h\u00E4n ja paina ENTER (v - n\u00E4yt\u00E4 komennot): ";
+                aloitus = "  Paina kirjainta tai numeroa (v - n\u00E4yt\u00E4 komennot)";
             }
             System.out.print(aloitus);
-
+            /*
             String syote = this.lukija.nextLine();
             if (syote.equals("x")) {
                 // Lopetetaaan ohjelma ja tallennetaan käyttäjän asettamat tapahtumat, tehtävät sekä asetus komento-ohjeiden näyttämisestä.
@@ -102,11 +108,11 @@ public class Kayttoliittyma {
                 System.out.println("  Mukavaa p\u00E4iv\u00E4njatkoa! :)");
                 break;
             }
-
-            kasitteleKomento(syote);
+*/
+            //kasitteleKomento(syote);
 
             System.out.println("");
-        }
+        //}
     }
 
     private void kaynnistaPaivanakyma() {
@@ -117,7 +123,7 @@ public class Kayttoliittyma {
             tulostaPaivanakymaOhje();
             System.out.println();
 
-            System.out.print("  Syöt\u00E4 komento: ");
+            System.out.print("  Sy\u00F6t\u00E4 komento: ");
             String syote = lukija.nextLine();
             if (syote.equals("c")) {
                 clrscr();
@@ -129,56 +135,85 @@ public class Kayttoliittyma {
 
     }
 
+    @Override
+    public void nativeKeyPressed(NativeKeyEvent e) {
+        System.out.println("Key Pressed: " + NativeKeyEvent.getKeyText(e.getKeyCode()));
+        kasitteleKomento(NativeKeyEvent.getKeyText(e.getKeyCode()));
+
+        Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
+        logger.setLevel(Level.OFF);
+
+        // Don't forget to disable the parent handlers.
+        logger.setUseParentHandlers(false);
+        if (e.getKeyCode() == NativeKeyEvent.VC_ESCAPE) {
+            try {
+                GlobalScreen.unregisterNativeHook();
+            } catch (NativeHookException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
     public void kasitteleKomento(String komento) {
         switch (komento) {
-            case "d":
+            case "D":
                 clrscr();
                 this.kalenteri.liikuOikealle();
+                kaynnista();
                 break;
 
-            case "a":
+            case "A":
                 clrscr();
                 this.kalenteri.liikuVasemmalle();
+                kaynnista();
                 break;
 
-            case "w":
+            case "W":
                 clrscr();
                 this.kalenteri.liikuYlos();
+                kaynnista();
                 break;
 
-            case "s":
+            case "S":
                 clrscr();
                 this.kalenteri.liikuAlas();
+                kaynnista();
                 break;
 
-            case "e":
+            case "E":
                 clrscr();
                 this.kalenteri.seuraavaKuukausi();
+                kaynnista();
                 break;
 
-            case "q":
+            case "Q":
                 clrscr();
                 this.kalenteri.edellinenKuukausi();
+                kaynnista();
                 break;
 
-            case "ee":
+            case "R":
                 clrscr();
                 this.kalenteri.seuraavaVuosi();
+                kaynnista();
                 break;
 
-            case "qq":
+            case "F":
                 clrscr();
                 this.kalenteri.edellinenVuosi();
+                kaynnista();
                 break;
 
-            case "p":
+            case "P":
                 clrscr();
                 vaihdaPaivamaaraa();
+                kaynnista();
                 break;
 
-            case "t":
+            case "T":
                 clrscr();
                 this.kalenteri.nykyinenPaiva();
+                kaynnista();
                 break;
 
             case "1":
@@ -200,22 +235,29 @@ public class Kayttoliittyma {
                 clrscr();
                 this.tulostaKuukausinakyma = false;
                 this.kalenteri.tulostaVuosiNakyma();
-
                 break;
 
-            case "v":
+            case "V":
                 clrscr();
                 vaihdaKomentojenTulostusAsetusta();
+                kaynnista();
                 break;
 
-            case "c":
+            case "C":
                 clrscr();
                 System.out.println("  Et voi menn\u00E4 t\u00E4st\u00E4 n\u00E4kym\u00E4st\u00E4 taaksep\u00E4in.");
+                kaynnista();
+                break;
+
+            case "X":
+                clrscr();
+
                 break;
 
             default:
                 clrscr();
                 System.out.println("  Komentoa ei ole olemassa. Yrit\u00E4 uudelleen.");
+                kaynnista();
                 break;
         }
     }
@@ -250,21 +292,22 @@ public class Kayttoliittyma {
     }
 
     private void vaihdaPaivamaaraa() {
-        while (true) {
+        //while (true) {
             System.out.print("  Anna p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4 (d ohje): ");
             String syote = this.lukija.nextLine();
             if (syote.equals("c")) {
-                break;
+                //break;
             }
 
             if (syote.equals("d")) {
                 tulostaPvmVaihtoOhje();
-                continue;
+                //continue;
             }
 
             LocalDate pvm = syotePaivamaaraksi(syote);
             this.kalenteri.asetaPaivamaaraa(pvm);
-        }
+            kaynnista();
+        //}
     }
 
     private void lisaaTapahtuma() {
@@ -591,8 +634,8 @@ public class Kayttoliittyma {
         System.out.println("   s - liikus alas                       4 - n\u00E4yt\u00E4 vuosin\u00E4kym\u00E4 - KESKEN");
         System.out.println("   e - seuraava kuukausi                 c - mene taaksep\u00E4in");
         System.out.println("   q - edellinen kuukausi                x - lopeta");
-        System.out.println("   ee - seuraava vuosi                   v - piilota komennot");
-        System.out.println("   qq - edellinen vuosi");
+        System.out.println("   r - seuraava vuosi                    v - piilota komennot");
+        System.out.println("   f - edellinen vuosi");
         System.out.println("   p - vaihda p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4\u00E4");
         System.out.println("   t - t\u00E4m\u00E4 p\u00E4iv\u00E4");
 
@@ -611,5 +654,15 @@ public class Kayttoliittyma {
         System.out.println("  3 - poista tapahtuma");
         System.out.println("  4 - poista tehtava");
         System.out.println("  c - takaisin kuukausin\u00E4kym\u00E4\u00E4n");
+    }
+
+    @Override
+    public void nativeKeyTyped(NativeKeyEvent nativeKeyEvent) {
+
+    }
+
+    @Override
+    public void nativeKeyReleased(NativeKeyEvent nativeKeyEvent) {
+
     }
 }

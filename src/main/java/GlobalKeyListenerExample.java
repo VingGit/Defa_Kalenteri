@@ -13,10 +13,13 @@ public class GlobalKeyListenerExample implements NativeKeyListener {
 
     public void nativeKeyPressed(NativeKeyEvent e) {
         System.out.println("Key Pressed: " + NativeKeyEvent.getKeyText(e.getKeyCode()));
+
+
+
         Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
         logger.setLevel(Level.OFF);
 
-// Don't forget to disable the parent handlers.
+    // Don't forget to disable the parent handlers.
         logger.setUseParentHandlers(false);
         if (e.getKeyCode() == NativeKeyEvent.VC_ESCAPE) {
             try {
