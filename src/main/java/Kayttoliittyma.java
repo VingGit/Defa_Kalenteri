@@ -46,6 +46,7 @@ public class Kayttoliittyma implements NativeKeyListener {
 
     public void kaynnista() {
         //while (true) {
+
             this.kalenteri.tulostaTervehdysJaKello();
             System.out.println("");
 
@@ -138,7 +139,9 @@ public class Kayttoliittyma implements NativeKeyListener {
     @Override
     public void nativeKeyPressed(NativeKeyEvent e) {
         System.out.println("Key Pressed: " + NativeKeyEvent.getKeyText(e.getKeyCode()));
+
         kasitteleKomento(NativeKeyEvent.getKeyText(e.getKeyCode()));
+
 
         Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
         logger.setLevel(Level.OFF);
@@ -158,7 +161,9 @@ public class Kayttoliittyma implements NativeKeyListener {
         switch (komento) {
             case "D":
                 clrscr();
+                GlobalScreen.removeNativeKeyListener(this);
                 this.kalenteri.liikuOikealle();
+                GlobalScreen.addNativeKeyListener(this);
                 kaynnista();
                 break;
 
@@ -206,7 +211,9 @@ public class Kayttoliittyma implements NativeKeyListener {
 
             case "P":
                 clrscr();
+                GlobalScreen.removeNativeKeyListener(this);
                 vaihdaPaivamaaraa();
+                GlobalScreen.addNativeKeyListener(this);
                 kaynnista();
                 break;
 
@@ -306,7 +313,7 @@ public class Kayttoliittyma implements NativeKeyListener {
 
             LocalDate pvm = syotePaivamaaraksi(syote);
             this.kalenteri.asetaPaivamaaraa(pvm);
-            kaynnista();
+
         //}
     }
 

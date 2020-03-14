@@ -26,11 +26,11 @@ public class Main {
             System.exit(1);
         }
 
-        GlobalScreen.addNativeKeyListener(liittyma);
-
         // estetään värien tulostuksesta syntyvä bugi
         liittyma.kasitteleKomento("W");
         liittyma.kasitteleKomento("S");
+
+        GlobalScreen.addNativeKeyListener(liittyma);
 
         liittyma.kaynnista();
     }
