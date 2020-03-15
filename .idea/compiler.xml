@@ -9,8 +9,8 @@
         <module name="jnativehook" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="jnativehook" target="13" />
+    <bytecodeTargetLevel target="13">
+      <module name="jnativehook" target="12" />
     </bytecodeTargetLevel>
   </component>
 </project>

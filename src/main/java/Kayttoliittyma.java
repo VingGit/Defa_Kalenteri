@@ -138,32 +138,41 @@ public class Kayttoliittyma implements NativeKeyListener {
 
     @Override
     public void nativeKeyPressed(NativeKeyEvent e) {
-        System.out.println("Key Pressed: " + NativeKeyEvent.getKeyText(e.getKeyCode()));
 
-        kasitteleKomento(NativeKeyEvent.getKeyText(e.getKeyCode()));
+            System.out.println("Key Pressed: " + NativeKeyEvent.getKeyText(e.getKeyCode()));
+
+            kasitteleKomento(NativeKeyEvent.getKeyText(e.getKeyCode()));//executes a method based on the letter
+            GlobalScreen.removeNativeKeyListener(this);     //removes the keylistener, so user input won't interfere with the nativehook and fire up unrelated methods.
+            System.out.println("Method execution succeeded");
+            kasitteleKomento("O");
 
 
         Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
-        logger.setLevel(Level.OFF);
+            logger.setLevel(Level.OFF);
 
-        // Don't forget to disable the parent handlers.
-        logger.setUseParentHandlers(false);
-        if (e.getKeyCode() == NativeKeyEvent.VC_ESCAPE) {
-            try {
-                GlobalScreen.unregisterNativeHook();
-            } catch (NativeHookException ex) {
-                ex.printStackTrace();
+            // Don't forget to disable the parent handlers.
+            logger.setUseParentHandlers(false);
+
+
+            if (e.getKeyCode() == NativeKeyEvent.VC_ESCAPE) {
+                try {
+                    GlobalScreen.unregisterNativeHook();
+                } catch (NativeHookException ex) {
+                    ex.printStackTrace();
+                }
             }
-        }
+
+
     }
 
     public void kasitteleKomento(String komento) {
+
         switch (komento) {
             case "D":
                 clrscr();
-                GlobalScreen.removeNativeKeyListener(this);
+
                 this.kalenteri.liikuOikealle();
-                GlobalScreen.addNativeKeyListener(this);
+
                 kaynnista();
                 break;
 
@@ -211,10 +220,11 @@ public class Kayttoliittyma implements NativeKeyListener {
 
             case "P":
                 clrscr();
-                GlobalScreen.removeNativeKeyListener(this);
+
                 vaihdaPaivamaaraa();
-                GlobalScreen.addNativeKeyListener(this);
+
                 kaynnista();
+
                 break;
 
             case "T":
@@ -261,6 +271,11 @@ public class Kayttoliittyma implements NativeKeyListener {
 
                 break;
 
+            case "O":
+                clrscr();
+                System.out.println("returned to basic view");
+                kaynnista();
+                break;
             default:
                 clrscr();
                 System.out.println("  Komentoa ei ole olemassa. Yrit\u00E4 uudelleen.");
@@ -300,7 +315,9 @@ public class Kayttoliittyma implements NativeKeyListener {
 
     private void vaihdaPaivamaaraa() {
         //while (true) {
+     //   GlobalScreen.removeNativeKeyListener(this);
             System.out.print("  Anna p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4 (d ohje): ");
+
             String syote = this.lukija.nextLine();
             if (syote.equals("c")) {
                 //break;
@@ -315,6 +332,7 @@ public class Kayttoliittyma implements NativeKeyListener {
             this.kalenteri.asetaPaivamaaraa(pvm);
 
         //}
+
     }
 
     private void lisaaTapahtuma() {
