@@ -15,7 +15,7 @@ public class Kayttoliittyma {
     private  Kalenteri kalenteri;
     private boolean tulostaKomentoOhje;
     private boolean tulostaKuukausinakyma;
-    
+
     public Kayttoliittyma(Scanner lukija, Kalenteri kalenteri) {
         this.kalenteri = kalenteri;
         this.lukija = lukija;
