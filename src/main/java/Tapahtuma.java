@@ -87,7 +87,7 @@ public class Tapahtuma extends Merkinta {
 
         }
         if (this.alku.isEqual(this.loppu)) {
-            aikaVali = "Koko päivän";
+            aikaVali = "Koko p\u00E4iv\u00E4n";
         }
 
 
@@ -134,7 +134,7 @@ public class Tapahtuma extends Merkinta {
         String aikaVali = this.alku.format(formatter) + " - " + this.loppu.format(formatter);
 
         if (this.alku.isEqual(this.loppu)) {
-            aikaVali = "Koko päivän";
+            aikaVali = "Koko p\u00E4iv\u00E4n";
         }
 
         return this.nimi + ", " + aikaVali;

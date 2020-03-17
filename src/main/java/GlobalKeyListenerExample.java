@@ -84,7 +84,7 @@ public class GlobalKeyListenerExample implements NativeKeyListener {
 
                 String syote = this.lukija.nextLine();
 
-        //yllä oleva syote pitäisi pystyä luomaan täysin tyhjänä,
+                //yllä oleva syote pitäisi pystyä luomaan täysin tyhjänä,
                 // nyt se tulostaa scannerin luonnin yhteydessä kaikki kirjaimet
                 //joita painoit ennen kun painoit b:tä. bugi ei kuitenkaan vaikuta ohjelman toimintaan.
                 syote = syote.substring(syote.indexOf("b")+1);

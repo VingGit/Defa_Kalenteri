@@ -70,6 +70,7 @@ public class Kayttoliittyma {
 
             String syote = this.lukija.nextLine();
             if (syote.equals("x")) {
+
                 // Lopetetaaan ohjelma ja tallennetaan käyttäjän asettamat tapahtumat, tehtävät sekä asetus komento-ohjeiden näyttämisestä.
                 try {
                     FileOutputStream fos = new FileOutputStream("TapahtumaData");
@@ -117,7 +118,7 @@ public class Kayttoliittyma {
             tulostaPaivanakymaOhje();
             System.out.println();
 
-            System.out.print("  Syöt\u00E4 komento: ");
+            System.out.print("  Sy\u00F6t\u00E4 komento: ");
             String syote = lukija.nextLine();
             if (syote.equals("c")) {
                 clrscr();

@@ -337,7 +337,7 @@ public class Kalenteri {
                 this.pvm.isEqual(t.annaAloitus().toLocalDate())  ||
                 this.pvm.isEqual(t.annaLopetus().toLocalDate()))  {
 
-                System.out.print(Varit.BLUE);
+                System.out.print(Varit.GREEN);
                 System.out.println("  " + t.toString());
                 System.out.print(Varit.RESET);
                 System.out.println("");
