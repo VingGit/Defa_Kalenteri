@@ -100,6 +100,7 @@ public class Kayttoliittyma {
                     ioe.printStackTrace();
                 }
 
+                System.out.println();
                 System.out.println("  Mukavaa p\u00E4iv\u00E4njatkoa! :)");
                 break;
             }
@@ -173,7 +174,7 @@ public class Kayttoliittyma {
                 break;
 
             case "p":
-                clrscr();
+                System.out.println();
                 vaihdaPaivamaaraa();
                 break;
 
@@ -183,12 +184,12 @@ public class Kayttoliittyma {
                 break;
 
             case "1":
-                clrscr();
+                System.out.println();
                 lisaaTapahtuma();
                 break;
 
             case "2":
-                clrscr();
+                System.out.println();
                 lisaaTehtava();
                 break;
 
@@ -224,27 +225,27 @@ public class Kayttoliittyma {
     public void kasitteleKomentoPaivanakyma(String komento) {
         switch (komento) {
             case "1":
-                clrscr();
+                System.out.println();
                 lisaaTapahtuma();
                 break;
 
             case "2":
-                clrscr();
+                System.out.println();
                 lisaaTehtava();
                 break;
 
             case "3":
-                clrscr();
+                System.out.println();
                 poistaTapahtuma();
                 break;
 
             case "4":
-                clrscr();
+                System.out.println();
                 poistaTehtava();
                 break;
 
             default:
-                clrscr();
+                System.out.println();
                 System.out.println("  Komentoa ei ole olemassa. Yrit\u00E4 uudelleen.");
                 break;
         }
@@ -255,6 +256,7 @@ public class Kayttoliittyma {
             System.out.print("  Anna p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4 (d ohje): ");
             String syote = this.lukija.nextLine();
             if (syote.equals("c")) {
+                clrscr();
                 break;
             }
 
@@ -265,6 +267,7 @@ public class Kayttoliittyma {
 
             LocalDate pvm = syotePaivamaaraksi(syote);
             this.kalenteri.asetaPaivamaaraa(pvm);
+            break;
         }
     }
 
@@ -274,6 +277,7 @@ public class Kayttoliittyma {
             System.out.print("  Nime\u00E4 tapahtuma: ");
             syote = lukija.nextLine();
             if (syote.equals("c")) {
+                clrscr();
                 break;
             }
 
@@ -418,6 +422,7 @@ public class Kayttoliittyma {
             System.out.print("  Nime\u00E4 teht\u00E4v\u00E4: ");
             syote = lukija.nextLine();
             if (syote.equals("c")) {
+                clrscr();
                 break;
             }
 
@@ -541,21 +546,31 @@ public class Kayttoliittyma {
     }
 
     private LocalDate syotePaivamaaraksi(String syote) {
-        LocalDate pvm = null;
+        int paiva = this.kalenteri.annaPvm().getDayOfMonth();
+        int kuukausi = this.kalenteri.annaPvm().getMonth().getValue();
+        int vuosi = this.kalenteri.annaPvm().getYear();
+        LocalDate pvm = LocalDate.of(vuosi, kuukausi, paiva);
+
         boolean flag = true;
         while (flag) {
             try {
                 String[] osat = syote.split("\\.");
-                int paiva = Integer.valueOf(osat[0]);
-                int kuukausi = Integer.valueOf(osat[1]);
-                int vuosi = Integer.valueOf(osat[2]);
+                paiva = Integer.valueOf(osat[0]);
+                kuukausi = Integer.valueOf(osat[1]);
+                vuosi = Integer.valueOf(osat[2]);
                 pvm = LocalDate.of(vuosi, kuukausi, paiva);
                 flag = false;
 
             } catch (NumberFormatException e) {
                 System.out.print("  Aseta kelvollinen p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4 (esim 4.10.2021): ");
             } catch (ArrayIndexOutOfBoundsException e) {
-                System.out.print("  Aseta kelvollinen p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4 (esim 4.10.2021): ");
+                try {
+                    pvm = LocalDate.of(vuosi, kuukausi, paiva);
+                } catch (DateTimeException ex) {
+                    System.out.print("  Aseta kelvollinen p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4 (esim 4.10.): ");
+                    continue;
+                }
+               flag = false;
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
@@ -601,7 +616,7 @@ public class Kayttoliittyma {
 
     public void tulostaPvmVaihtoOhje() {
         System.out.println("  Voit vaihtaa koko p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4n sy\u00F6tt\u00E4m\u00E4ll\u00E4 esim. 10.12.2016");
-        System.out.println("  Jos haluat vaihtaa vain p\u00E4iv\u00E4\u00E4 ja kuukautta, sy\u00F6t\u00E4 esim 10.12.");
+        System.out.println("  Jos haluat vaihtaa vain p\u00E4iv\u00E4\u00E4 ja kuukautta, sy\u00F6t\u00E4 esim 10.12");
         System.out.println("  Jos haluat vaihtaa vain p\u00E4iv\u00E4\u00E4, sy\u00F6t\u00E4 esim. 10");
     }
 

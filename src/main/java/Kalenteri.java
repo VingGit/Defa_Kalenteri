@@ -332,25 +332,41 @@ public class Kalenteri {
         System.out.println();
 
         System.out.println("  ------------ Tapahtumat ----------- ");
-        for (Tapahtuma t : this.tapahtumat) {
-            if (this.pvm.isAfter(t.annaAloitus().toLocalDate())  &&  (this.pvm.isBefore(t.annaLopetus().toLocalDate()))  ||
-                this.pvm.isEqual(t.annaAloitus().toLocalDate())  ||
-                this.pvm.isEqual(t.annaLopetus().toLocalDate()))  {
 
-                System.out.print(Varit.GREEN);
-                System.out.println("  " + t.toString());
-                System.out.print(Varit.RESET);
-                System.out.println("");
+        if (!onkoTapahtumia()) {
+            System.out.println("    Ei tapahtumia");
+            System.out.println();
+        }
+
+        if (onkoTapahtumia()) {
+            for (Tapahtuma t : this.tapahtumat) {
+                if (this.pvm.isAfter(t.annaAloitus().toLocalDate())  &&  (this.pvm.isBefore(t.annaLopetus().toLocalDate()))  ||
+                        this.pvm.isEqual(t.annaAloitus().toLocalDate())  ||
+                        this.pvm.isEqual(t.annaLopetus().toLocalDate()))  {
+
+                    System.out.print(Varit.GREEN);
+                    System.out.println("  " + t.toString());
+                    System.out.print(Varit.RESET);
+                    System.out.println();
+                }
             }
         }
 
         System.out.println("  ------------ Teht\u00E4v\u00E4t ------------ ");
-        for (Tehtava t : this.tehtavat) {
-            if (this.pvm.isEqual(t.annaAloitus().toLocalDate())) {
-                System.out.print(Varit.GREEN);
-                System.out.println("  " + t.toString());
-                System.out.print(Varit.RESET);
-                System.out.println("");
+
+        if (!onkoTehtavia()) {
+            System.out.println("    Ei tehtavi\u00E4");
+            System.out.println();
+        }
+
+        if (onkoTehtavia()) {
+            for (Tehtava t : this.tehtavat) {
+                if (this.pvm.isEqual(t.annaAloitus().toLocalDate())) {
+                    System.out.print(Varit.GREEN);
+                    System.out.println("  " + t.toString());
+                    System.out.print(Varit.RESET);
+                    System.out.println();
+                }
             }
         }
     }
