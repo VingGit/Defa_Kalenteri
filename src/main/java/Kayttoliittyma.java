@@ -200,25 +200,14 @@ public class Kayttoliittyma {
 
             case "4":
                 clrscr();
+                if(!this.tulostaKuukausinakyma){
+                    this.tulostaKuukausinakyma = true;
+                    break;
+                }
                 this.tulostaKuukausinakyma = false;
-                this.kalenteri.tulostaVuosiNakyma();
-
                 break;
 
-            case "v":
-                clrscr();
-                vaihdaKomentojenTulostusAsetusta();
-                break;
 
-            case "c":
-                clrscr();
-                System.out.println("  Et voi menn\u00E4 t\u00E4st\u00E4 n\u00E4kym\u00E4st\u00E4 taaksep\u00E4in.");
-                break;
-
-            default:
-                clrscr();
-                System.out.println("  Komentoa ei ole olemassa. Yrit\u00E4 uudelleen.");
-                break;
         }
     }
 
@@ -627,5 +616,7 @@ public class Kayttoliittyma {
         System.out.println("  3 - poista tapahtuma");
         System.out.println("  4 - poista tehtava");
         System.out.println("  c - takaisin kuukausin\u00E4kym\u00E4\u00E4n");
+
     }
+
 }
