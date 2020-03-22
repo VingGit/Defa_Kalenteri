@@ -36,6 +36,9 @@ public class testi {
             System.out.println("totta");
         }
 
+        Object o = new String("Moro!");
+        o.
+
     }
 
 }
