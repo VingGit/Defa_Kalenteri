@@ -1,7 +1,7 @@
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.chrono.ChronoLocalDate;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -53,7 +53,9 @@ public class Kalenteri {
         return this.pvm;
     }
 
-
+    public int annaKuukausi() {
+        return this.pvm.getMonthValue();
+    }
     /**___________________TAPAHTUMIIN/TEHTÄVIIN/JUHLIIN LIITTYVÄT METODIT______________________________________
      * Näillä metodeilla voidaan käsitellä kalenterin listoja.
      */
@@ -320,7 +322,7 @@ public class Kalenteri {
     }
 
     public void tulostaKuukausiNakyma() {
-        KalenteriNakyma.tulostaKuukausi( this.pvm.getDayOfMonth(), this.pvm.getMonthValue(), this.pvm.getYear(), this.pvm.getDayOfWeek(), this.juhlat, this.tapahtumat, this.tehtavat) ;
+        KalenteriNakyma.tulostaKuukausi( this.pvm.getDayOfMonth(), this.pvm.getMonthValue(), this.pvm.getYear(), this.pvm.getDayOfWeek(), this.juhlat, this.tapahtumat, this.tehtavat,true) ;
     }
 
     public void tulostaPaivaNakyma() {
