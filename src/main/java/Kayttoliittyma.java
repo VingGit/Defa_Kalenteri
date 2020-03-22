@@ -621,7 +621,7 @@ public class Kayttoliittyma {
         System.out.println("   d - liiku oikealle                    1 - lis\u00E4\u00E4 tapahtuma");
         System.out.println("   a - liiku vasemmalle                  2 - lis\u00E4\u00E4 teht\u00E4v\u00E4");
         System.out.println("   w - liiku yl\u00F6s                        3 - tarkastele p\u00E4iv\u00E4\u00E4");
-        System.out.println("   s - liikus alas                       4 - n\u00E4yt\u00E4 vuosin\u00E4kym\u00E4 - KESKEN");
+        System.out.println("   s - liikus alas                       4 - n\u00E4yt\u00E4 vuosin\u00E4kym\u00E4");
         System.out.println("   e - seuraava kuukausi                 c - mene taaksep\u00E4in");
         System.out.println("   q - edellinen kuukausi                x - lopeta");
         System.out.println("   ee - seuraava vuosi                   v - piilota komennot");
