@@ -53,9 +53,7 @@ public class Kalenteri {
         return this.pvm;
     }
 
-    public int annaKuukausi() {
-        return this.pvm.getMonthValue();
-    }
+
     /**___________________TAPAHTUMIIN/TEHTÄVIIN/JUHLIIN LIITTYVÄT METODIT______________________________________
      * Näillä metodeilla voidaan käsitellä kalenterin listoja.
      */
