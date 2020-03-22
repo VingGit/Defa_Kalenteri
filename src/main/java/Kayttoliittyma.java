@@ -194,6 +194,7 @@ public class Kayttoliittyma {
             case "p":
                 System.out.println();
                 vaihdaPaivamaaraa();
+                clrscr();
                 break;
 
             case "t":
@@ -226,9 +227,12 @@ public class Kayttoliittyma {
                 break;
 
             case "v":
+                clrscr();
                 vaihdaKomentojenTulostusAsetusta();
+                break;
 
             default:
+                clrscr();
                 System.out.println();
                 System.out.println("  Komentoa ei ole olemassa. Yrit\u00E4 uudelleen.");
                 break;
@@ -542,11 +546,11 @@ public class Kayttoliittyma {
                 flag = false;
 
             } catch (NumberFormatException e) {
-                System.out.print("  Aseta kelvollinen kellonaika (esim 7.45): ");
+                System.out.print("  Anna kelvollinen kellonaika (esim 7.45): ");
             } catch (ArrayIndexOutOfBoundsException e) {
-                System.out.print("  Aseta kelvollinen kellonaika (esim 7.45): ");
+                System.out.print("  Anna kelvollinen kellonaika (esim 7.45): ");
             } catch (DateTimeException e) {
-                System.out.print("  Aseta kelvollinen kellonaika (esim 7.45): ");
+                System.out.print("  Anna kelvollinen kellonaika (esim 7.45): ");
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
@@ -575,12 +579,12 @@ public class Kayttoliittyma {
                 flag = false;
 
             } catch (NumberFormatException e) {
-                System.out.print("  Aseta kelvollinen p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4 (esim 4.10.2021): ");
+                System.out.print("  Anna kelvollinen p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4 (esim 4.10.2021): ");
             } catch (ArrayIndexOutOfBoundsException e) {
                 try {
                     pvm = LocalDate.of(vuosi, kuukausi, paiva);
                 } catch (DateTimeException ex) {
-                    System.out.print("  Aseta kelvollinen p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4 (esim 4.10.): ");
+                    System.out.print("  Anna kelvollinen p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4 (esim 4.10.): ");
                     continue;
                 }
                flag = false;

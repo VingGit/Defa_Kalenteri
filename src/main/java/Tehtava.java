@@ -45,6 +45,6 @@ public class Tehtava extends Merkinta {
             muistiinpanot = "-";
         }
 
-        return this.nimi + ", " + this.alku.format(formatter) + ", " + muistutus + "\n  Muistiinpanot: " + muistiinpanot;
+        return this.nimi + "\n Aika: " + this.alku.format(formatter) + "\n  Muistiinpanot: " + muistiinpanot + "\n Muistutus: " + muistutus + ;
     }
 }

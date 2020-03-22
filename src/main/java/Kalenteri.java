@@ -422,16 +422,23 @@ public class Kalenteri {
             return;
         }
 
+        boolean onkoMuistutusPaalla = false;
         for (Tapahtuma t : annaKuukaudenTapahtumat()) {
             if (t.onkoMuistutus()) {
                 System.out.println("   " + t.annaNimi() + ", " + t.annaAloitus().getDayOfMonth() + ". p\u00E4iv\u00E4");
+                onkoMuistutusPaalla = true;
             }
         }
 
         for (Tehtava t : annaKuukaudenTehtavat()) {
             if (t.onkoMuistutus()) {
                 System.out.println("   " + t.annaNimi() + ", " + t.annaAloitus().getDayOfMonth() + ". p\u00E4iv\u00E4");
+                onkoMuistutusPaalla = true;
             }
+        }
+
+        if (!onkoMuistutusPaalla) {
+            System.out.println("   Ei muistettavaa, chill :)");
         }
     }
 }
