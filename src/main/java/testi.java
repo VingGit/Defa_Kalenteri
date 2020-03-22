@@ -35,10 +35,6 @@ public class testi {
                 date.isEqual(date2)               ) {
             System.out.println("totta");
         }
-
-        Object o = new String("Moro!");
-        o.
-
     }
 
 }

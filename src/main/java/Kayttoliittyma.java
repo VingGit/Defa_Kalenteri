@@ -207,7 +207,13 @@ public class Kayttoliittyma {
                 this.tulostaKuukausinakyma = false;
                 break;
 
+            case "v":
+                vaihdaKomentojenTulostusAsetusta();
 
+            default:
+                System.out.println();
+                System.out.println("  Komentoa ei ole olemassa. Yrit\u00E4 uudelleen.");
+                break;
         }
     }
 

@@ -4,7 +4,7 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/** Staattinen luokka, jonka avulla voidaan tulostaa kuukausi tai päivä näkymä.
+/** Staattinen luokka, jonka avulla voidaan tulostaa kuukausi tai vuosinäkymä.
  */
 
 public abstract class KalenteriNakyma {
@@ -78,7 +78,9 @@ public abstract class KalenteriNakyma {
 
                 System.out.print("   ");
 
-                if (j == paiva && !onkoKuukausi&& M==5) {//pitäisi verrata kuukautta siihen kuukauteen, jossa nyt ollaan. nyt siinä on 5 mutta siihen tilalle pitäs saada joku sopiva getteri.
+                if (j == paiva && !onkoKuukausi && M == 5) {//pitäisi verrata kuukautta siihen kuukauteen, jossa nyt ollaan. nyt siinä on 5 mutta siihen tilalle pitäs saada joku sopiva getteri.
+                    System.out.print(Varit.CYAN_BACKGROUND);
+                } else if (j == paiva && onkoKuukausi) {
                     System.out.print(Varit.CYAN_BACKGROUND);
                 }
 
