@@ -18,7 +18,7 @@ public abstract class KalenteriNakyma {
         return dayOfWeek.getValue();
     }
 
-    public static void tulostaKuukausi(int paiva, int kuukausi, int vuosi, DayOfWeek vkpaiva, HashMap juhlat, ArrayList<Tapahtuma> tapahtumat, ArrayList<Tehtava> tehtavat) {
+    public static void tulostaKuukausi(int paiva, int kuukausi, int vuosi, DayOfWeek vkpaiva, HashMap juhlat, ArrayList<Tapahtuma> tapahtumat, ArrayList<Tehtava> tehtavat, boolean onkoKuukausi) {
 
         // spaces required
         int spaces = getDay(vuosi, kuukausi) - 1;
@@ -77,7 +77,8 @@ public abstract class KalenteriNakyma {
                 //System.out.printf(" %3d ", j);
 
                 System.out.print("   ");
-                if (j == paiva) {
+
+                if (j == paiva && !onkoKuukausi&& M==5) {//pitäisi verrata kuukautta siihen kuukauteen, jossa nyt ollaan. nyt siinä on 5 mutta siihen tilalle pitäs saada joku sopiva getteri.
                     System.out.print(Varit.CYAN_BACKGROUND);
                 }
 
@@ -101,54 +102,11 @@ public abstract class KalenteriNakyma {
             if (kk > 1) {
                 System.out.println();
             }
-            tulostaKuukausi( paiva, kk , vuosi, vkpaiva, juhlat, tapahtumat, tehtavat );
+
+            tulostaKuukausi( paiva, kk , vuosi, vkpaiva, juhlat, tapahtumat, tehtavat, false );
         }
 
 
     }
-    /*
-    public static void tulostaVuosi(int vuosi) {
-        int kuukausi = 1;    // year
-        int Y = vuosi;
-        int spaces = getDay(Y, kuukausi) - 1;
 
-        // number of days in month
-        int days = Kuukaudet.annaPaiviaKuukaudessaLkm(kuukausi);
-
-        for (int M = kuukausi; M <= 12; M++) {
-
-            // check for leap year
-            if ((((Y % 4 == 0) && (Y % 100 != 0)) || (Y % 400 == 0)) && M == 2)
-                days += 1;
-
-
-            // print calendar header
-            // Display the month and year
-            System.out.println("          " + Kuukaudet.annaKuukausi(M) + " " + Y);
-
-            // Display the lines
-            System.out.println(" ____________________________________");
-            System.out.println("  Ma   Ti   Ke   To   Pe   La   Su");
-
-            // spaces required
-            spaces = (days - 1 + spaces) % 7;
-
-            // print the calendar
-
-            for (int i = 0; i < spaces; i++) {
-                System.out.print("     ");
-            }
-            for (int j = 1; j <= days; j++) {
-                System.out.printf(" %3d ", j);
-                if (((j + spaces) % 7 == 0) || (j == days)) System.out.println();
-
-            }
-
-            System.out.println(" ____________________________________");
-            System.out.println();
-
-        }
-    }*/
-
-    //public static void tulostaPaiva() { }
 }

@@ -87,19 +87,7 @@ public class Tapahtuma extends Merkinta {
 
         }
         if (this.alku.isEqual(this.loppu)) {
-            aikaVali = "Koko päivän";
-        }
-
-
-        String muistutus;
-        if (this.muistutus != null) {
-            if (ulottuukoToiseenPaivaan()) {
-                muistutus = "Muistutetaan " + this.muistutus.format(formatter);
-            } else {
-                muistutus = "Muistutetaan " + this.muistutus.format(formatter2);
-            }
-        } else {
-            muistutus = "Ei muistutusta";
+            aikaVali = "Koko p\u00E4iv\u00E4n";
         }
 
         String paikka = this.paikka;
@@ -108,7 +96,7 @@ public class Tapahtuma extends Merkinta {
         }
 
         String osallistujat = this.osallistujat.toString();
-        if (osallistujat == null) {
+        if (this.osallistujat == null || this.osallistujat.isEmpty()) {
             osallistujat = "-";
         } else {
             osallistujat = osallistujat.replace("[", "");
@@ -120,7 +108,18 @@ public class Tapahtuma extends Merkinta {
             kuvaus = "-";
         }
 
-        return this.nimi + ", " + aikaVali + ", " + muistutus + "\n  " + "Paikka: " + paikka + "\n  Osallistujat: " + osallistujat + "\n  Kuvaus: " + kuvaus;
+        String muistutus;
+        if (this.muistutus != null) {
+            if (ulottuukoToiseenPaivaan()) {
+                muistutus = "Muistutetaan " + this.muistutus.format(formatter);
+            } else {
+                muistutus = "Muistutetaan " + this.muistutus.format(formatter2);
+            }
+        } else {
+            muistutus = "Ei p\u00E4\u00E4ll\u00E4";
+        }
+
+        return this.nimi + "\n  Ajankohta: " + aikaVali + "\n  " + "Paikka: " + paikka + "\n  Osallistujat: " + osallistujat + "\n  Kuvaus: " + kuvaus + "\n  Muistutus: " + muistutus;
     }
 
     public String toStringLyhyt() {
@@ -134,7 +133,7 @@ public class Tapahtuma extends Merkinta {
         String aikaVali = this.alku.format(formatter) + " - " + this.loppu.format(formatter);
 
         if (this.alku.isEqual(this.loppu)) {
-            aikaVali = "Koko päivän";
+            aikaVali = "Koko p\u00E4iv\u00E4n";
         }
 
         return this.nimi + ", " + aikaVali;

@@ -1,7 +1,7 @@
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.chrono.ChronoLocalDate;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -53,7 +53,9 @@ public class Kalenteri {
         return this.pvm;
     }
 
-
+    public int annaKuukausi() {
+        return this.pvm.getMonthValue();
+    }
     /**___________________TAPAHTUMIIN/TEHTÄVIIN/JUHLIIN LIITTYVÄT METODIT______________________________________
      * Näillä metodeilla voidaan käsitellä kalenterin listoja.
      */
@@ -320,7 +322,7 @@ public class Kalenteri {
     }
 
     public void tulostaKuukausiNakyma() {
-        KalenteriNakyma.tulostaKuukausi( this.pvm.getDayOfMonth(), this.pvm.getMonthValue(), this.pvm.getYear(), this.pvm.getDayOfWeek(), this.juhlat, this.tapahtumat, this.tehtavat) ;
+        KalenteriNakyma.tulostaKuukausi( this.pvm.getDayOfMonth(), this.pvm.getMonthValue(), this.pvm.getYear(), this.pvm.getDayOfWeek(), this.juhlat, this.tapahtumat, this.tehtavat,true) ;
     }
 
     public void tulostaPaivaNakyma() {
@@ -332,25 +334,41 @@ public class Kalenteri {
         System.out.println();
 
         System.out.println("  ------------ Tapahtumat ----------- ");
-        for (Tapahtuma t : this.tapahtumat) {
-            if (this.pvm.isAfter(t.annaAloitus().toLocalDate())  &&  (this.pvm.isBefore(t.annaLopetus().toLocalDate()))  ||
-                this.pvm.isEqual(t.annaAloitus().toLocalDate())  ||
-                this.pvm.isEqual(t.annaLopetus().toLocalDate()))  {
 
-                System.out.print(Varit.BLUE);
-                System.out.println("  " + t.toString());
-                System.out.print(Varit.RESET);
-                System.out.println("");
+        if (!onkoTapahtumia()) {
+            System.out.println("    Ei tapahtumia");
+            System.out.println();
+        }
+
+        if (onkoTapahtumia()) {
+            for (Tapahtuma t : this.tapahtumat) {
+                if (this.pvm.isAfter(t.annaAloitus().toLocalDate())  &&  (this.pvm.isBefore(t.annaLopetus().toLocalDate()))  ||
+                        this.pvm.isEqual(t.annaAloitus().toLocalDate())  ||
+                        this.pvm.isEqual(t.annaLopetus().toLocalDate()))  {
+
+                    System.out.print(Varit.GREEN);
+                    System.out.println("  " + t.toString());
+                    System.out.print(Varit.RESET);
+                    System.out.println();
+                }
             }
         }
 
         System.out.println("  ------------ Teht\u00E4v\u00E4t ------------ ");
-        for (Tehtava t : this.tehtavat) {
-            if (this.pvm.isEqual(t.annaAloitus().toLocalDate())) {
-                System.out.print(Varit.GREEN);
-                System.out.println("  " + t.toString());
-                System.out.print(Varit.RESET);
-                System.out.println("");
+
+        if (!onkoTehtavia()) {
+            System.out.println("    Ei tehtavi\u00E4");
+            System.out.println();
+        }
+
+        if (onkoTehtavia()) {
+            for (Tehtava t : this.tehtavat) {
+                if (this.pvm.isEqual(t.annaAloitus().toLocalDate())) {
+                    System.out.print(Varit.GREEN);
+                    System.out.println("  " + t.toString());
+                    System.out.print(Varit.RESET);
+                    System.out.println();
+                }
             }
         }
     }
