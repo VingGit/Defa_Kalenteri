@@ -123,7 +123,7 @@ public class Kayttoliittyma {
             tulostaPaivanakymaOhje();
             System.out.println();
 
-            System.out.print("  Sy\u00F6t\u00E4 komento: ");
+            System.out.print("  Kirjoita komento t\u00E4h\u00E4n ja paina ENTER: ");
             String syote = lukija.nextLine();
             if (syote.equals("c")) {
                 clrscr();
@@ -205,11 +205,13 @@ public class Kayttoliittyma {
             case "1":
                 System.out.println();
                 lisaaTapahtuma();
+                clrscr();
                 break;
 
             case "2":
                 System.out.println();
                 lisaaTehtava();
+                clrscr();
                 break;
 
             case "3":
@@ -262,6 +264,7 @@ public class Kayttoliittyma {
                 break;
 
             default:
+                clrscr();
                 System.out.println();
                 System.out.println("  Komentoa ei ole olemassa. Yrit\u00E4 uudelleen.");
                 break;
@@ -498,13 +501,19 @@ public class Kayttoliittyma {
 
             if (tapahtuma.equals("d")) {
                 this.kalenteri.poistaPaivanTapahtumat();
+                clrscr();
+                System.out.println();
                 System.out.println("  Kaikki tapahtumat poistettu!");
                 break;
             }
 
             if (this.kalenteri.poistaTapahtuma(tapahtuma)) {
+                clrscr();
+                System.out.println();
                 System.out.println("  Tapahtuma poistettiin.");
             } else {
+                clrscr();
+                System.out.println();
                 System.out.println("  Tapahtumaa ei ole olemassa. Tarkista kirjoitusvirheet!");
             }
             break;
@@ -521,13 +530,19 @@ public class Kayttoliittyma {
 
             if (tehtava.equals("d")) {
                 this.kalenteri.poistaPaivanTehtavat();
+                clrscr();
+                System.out.println();
                 System.out.println("  Kaikki teht\u00E4v\u00E4t poistettu!");
                 break;
             }
 
             if (this.kalenteri.poistaTehtava(tehtava)) {
+                clrscr();
+                System.out.println();
                 System.out.println("  Teht\u00E4v\u00E4 poistettiin.");
             } else {
+                clrscr();
+                System.out.println();
                 System.out.println("  Tehtav\u00E4\u00E4 ei ole olemassa. Tarkista kirjoitusvirheet!");
             }
             break;
