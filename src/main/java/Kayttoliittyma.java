@@ -123,6 +123,7 @@ public class Kayttoliittyma {
             tulostaPaivanakymaOhje();
             System.out.println();
 
+
             System.out.print("  Kirjoita komento t\u00E4h\u00E4n ja paina ENTER: ");
             String syote = lukija.nextLine();
             if (syote.equals("c")) {
