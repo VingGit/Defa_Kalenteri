@@ -9,7 +9,7 @@ import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class testi2 {
+public class  testi2 {
    /* private static class MyTimeTask extends TimerTask
     {
 
