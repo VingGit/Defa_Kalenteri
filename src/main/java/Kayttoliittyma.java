@@ -657,7 +657,7 @@ public class Kayttoliittyma {
         System.out.println("  1 - lis\u00E4\u00E4 tapahtuma");
         System.out.println("  2 - lis\u00E4\u00E4 teht\u00E4v\u00E4");
         System.out.println("  3 - poista tapahtuma");
-        System.out.println("  4 - poista tehtava");
+        System.out.println("  4 - poista teht\u00E4v\u00E4");
         System.out.println("  c - takaisin kuukausin\u00E4kym\u00E4\u00E4n");
 
     }

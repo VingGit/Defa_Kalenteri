@@ -126,24 +126,25 @@ public class Kalenteri {
     }
 
     public ArrayList<Tapahtuma> annaKuukaudenTapahtumat() {
-        ArrayList<Tapahtuma> paivanTapahtumat = new ArrayList<>();
+        ArrayList<Tapahtuma> kuukaudenTapahtumat = new ArrayList<>();
         for (Tapahtuma t : this.tapahtumat) {
-            if (Integer.valueOf(t.annaAloitus().getMonthValue()) == this.pvm.getMonthValue()  /*||
+            if (t.annaAloitus().getMonthValue() == this.pvm.getMonthValue()  /*||
                 Integer.valueOf(t.annaLopetus().getMonthValue()) == this.pvm.getMonthValue()*/ ) {
-                paivanTapahtumat.add(t);
+                kuukaudenTapahtumat.add(t);
             }
         }
-        return paivanTapahtumat;
+        return kuukaudenTapahtumat;
     }
 
     public ArrayList<Tehtava> annaKuukaudenTehtavat() {
-        ArrayList<Tehtava> paivanTehtavat = new ArrayList<>();
+        ArrayList<Tehtava> kuukaudenTehtavat = new ArrayList<>();
         for (Tehtava t : this.tehtavat) {
-            if (t.annaAloitus().getDayOfMonth() == this.pvm.getMonthValue()) {
-                paivanTehtavat.add(t);
+
+            if (t.annaAloitus().getMonthValue() == this.pvm.getMonthValue()) {
+                kuukaudenTehtavat.add(t);
             }
         }
-        return paivanTehtavat;
+        return kuukaudenTehtavat;
     }
 
 
@@ -400,7 +401,7 @@ public class Kalenteri {
                 this.pvm.isEqual(t.annaLopetus().toLocalDate()))  {
 
                 System.out.print(Varit.GREEN);
-                System.out.println("  " + t.toStringLyhyt());
+                System.out.println("   " + t.toStringLyhyt());
                 System.out.print(Varit.RESET);
             }
         }
@@ -408,7 +409,7 @@ public class Kalenteri {
         for (Tehtava t : this.tehtavat) {
             if (this.pvm.isEqual(t.annaAloitus().toLocalDate())) {
                 System.out.print(Varit.GREEN);
-                System.out.println("  " + t.toStringLyhyt());
+                System.out.println("   " + t.toStringLyhyt());
                 System.out.print(Varit.RESET);
             }
         }
@@ -431,6 +432,7 @@ public class Kalenteri {
         }
 
         for (Tehtava t : annaKuukaudenTehtavat()) {
+            t.toString();
             if (t.onkoMuistutus()) {
                 System.out.println("   " + t.annaNimi() + ", " + t.annaAloitus().getDayOfMonth() + ". p\u00E4iv\u00E4");
                 onkoMuistutusPaalla = true;

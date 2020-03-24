@@ -31,11 +31,11 @@ public class Tehtava extends Merkinta {
 
     @Override
     public String toString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d.M.Y HH:mm");
 
         String muistutus;
         if (this.muistutus != null) {
-            muistutus = "Muistutetaan" + this.muistutus.format(formatter);
+            muistutus = "Muistutetaan " + this.muistutus.format(formatter);
         } else {
             muistutus = "Ei muistutusta";
         }
