@@ -6,6 +6,8 @@ import java.net.MalformedURLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -33,9 +35,12 @@ public class testi2 {
     }
     public static void main(String[] args) throws MalformedURLException, AWTException, ParseException {
 
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
-        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = dateFormatter .parse("2020-03-24 18:58:20");
+        LocalDateTime dt = LocalDateTime.of(2020,3,25,12,07);
+
+        // LocalDateTimen toStringissä tulee "T" päivämäärän ja ajan väliin. Korvataan se tyhjällä niin homma pelittää
+        Date date = dateFormatter .parse(dt.toString().replace("T", " "));
 
         //Now create the time and schedule it
         Timer timer = new Timer();
