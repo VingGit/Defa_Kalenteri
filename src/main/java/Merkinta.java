@@ -52,8 +52,17 @@ public class Merkinta implements Serializable {
 
     public void asetaMuistutus(LocalDateTime muistutus) throws ParseException {
         this.muistutus = muistutus;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        System.out.println(muistutus);
+
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+        // LocalDateTimen toStringissä tulee "T" päivämäärän ja ajan väliin. Korvataan se tyhjällä niin homma pelittää
+        Date date = dateFormatter.parse(this.muistutus.toString().replace("T", " "));
+
+        //Now create the time and schedule it
+        Timer timer = new Timer();
+
+        //Use this if you want to execute it once
+        timer.schedule(new MyTimeTask(), date);
     }
 
     private static class MyTimeTask extends TimerTask
@@ -86,7 +95,9 @@ public class Merkinta implements Serializable {
         trayIcon.setToolTip("System tray icon demo");
         tray.add(trayIcon);
 
-        trayIcon.displayMessage("Hello, World", "Java Notification Demo", TrayIcon.MessageType.INFO);
+        String caption = this.nimi + "weeee";
+        String text = this.alku + "faef";
+        trayIcon.displayMessage(caption, text, TrayIcon.MessageType.INFO);
     }
 
     public void poistaMuistutus() {
@@ -98,5 +109,9 @@ public class Merkinta implements Serializable {
             return false;
         }
         return true;
+    }
+
+    public String toString() {
+        return this.nimi + " " + this.alku.toString();
     }
 }
