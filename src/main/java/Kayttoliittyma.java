@@ -1,6 +1,9 @@
+import java.awt.*;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
+import java.text.ParseException;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -41,7 +44,7 @@ public class Kayttoliittyma {
 
 
 
-    public void kaynnista() {
+    public void kaynnista() throws ParseException {
         while (true) {
             this.kalenteri.tulostaTervehdysJaKello();
             System.out.println("");
@@ -115,7 +118,7 @@ public class Kayttoliittyma {
         }
     }
 
-    private void kaynnistaPaivanakyma() {
+    private void kaynnistaPaivanakyma() throws ParseException {
         while (true) {
             this.kalenteri.tulostaPaivaNakyma();
             System.out.println();
@@ -136,7 +139,7 @@ public class Kayttoliittyma {
 
     }
 
-    public void kasitteleKomento(String komento) {
+    public void kasitteleKomento(String komento) throws ParseException {
         switch (komento) {
             case "d":
                 clrscr();
@@ -242,7 +245,7 @@ public class Kayttoliittyma {
         }
     }
 
-    public void kasitteleKomentoPaivanakyma(String komento) {
+    public void kasitteleKomentoPaivanakyma(String komento) throws ParseException {
         switch (komento) {
             case "1":
                 System.out.println();
@@ -292,7 +295,7 @@ public class Kayttoliittyma {
         }
     }
 
-    private void lisaaTapahtuma() {
+    private void lisaaTapahtuma() throws ParseException {
         String syote;
         while (true) {
             System.out.print("  Nime\u00E4 tapahtuma: ");
@@ -436,8 +439,9 @@ public class Kayttoliittyma {
             break;
         }
     }
+    //näytä windows ilmoitus
 
-    private void lisaaTehtava() {
+    private void lisaaTehtava() throws ParseException {
         String syote;
         while (true) {
             System.out.print("  Nime\u00E4 teht\u00E4v\u00E4: ");

@@ -1,6 +1,5 @@
 
 import java.awt.*;
-import java.awt.event.*;
 import java.awt.TrayIcon.MessageType;
 import java.net.MalformedURLException;
 import java.text.DateFormat;
@@ -19,7 +18,7 @@ public class testi2 {
      *
      * @param
      */
-    private static class MyTimeTask extends TimerTask
+    public static class MyTimeTask extends TimerTask
     {
         testi2 app = new testi2();
         public void run()
