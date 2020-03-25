@@ -52,26 +52,32 @@ public class Merkinta implements Serializable {
 
     public void asetaMuistutus(LocalDateTime muistutus) throws ParseException {
         this.muistutus = muistutus;
-
-        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-
-        // LocalDateTimen toStringissä tulee "T" päivämäärän ja ajan väliin. Korvataan se tyhjällä niin homma pelittää
-        Date date = dateFormatter.parse(this.muistutus.toString().replace("T", " "));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = muistutus.format(formatter);
+        Date date=new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(formattedDateTime);
 
         //Now create the time and schedule it
         Timer timer = new Timer();
 
         //Use this if you want to execute it once
-        timer.schedule(new MyTimeTask(), date);
+        timer.schedule(new MyTimeTask(this.nimi, this.alku), date);
     }
 
-    private static class MyTimeTask extends TimerTask
-    {
+    private static class MyTimeTask extends TimerTask {
+        private String nimi;
+        private LocalDateTime aika;
+
+        public MyTimeTask(String nimi, LocalDateTime aika) {
+            this.nimi = nimi;
+            this.aika = aika;
+        }
+
         Merkinta app = new Merkinta();
-        public void run()
-        {
+
+        public void run() {
             try {
-                app.displayTray();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d.M.y  HH:mm");
+                app.displayTray(this.nimi, this.aika.format(formatter));
             } catch (AWTException | MalformedURLException e) {
                 e.printStackTrace();
             }
@@ -79,7 +85,7 @@ public class Merkinta implements Serializable {
             System.out.println("hei");
         }
     }
-    public void displayTray() throws AWTException, MalformedURLException {
+    public void displayTray(String caption, String text) throws AWTException, MalformedURLException {
         //Obtain only one instance of the SystemTray object
         SystemTray tray = SystemTray.getSystemTray();
 
@@ -95,8 +101,6 @@ public class Merkinta implements Serializable {
         trayIcon.setToolTip("System tray icon demo");
         tray.add(trayIcon);
 
-        String caption = this.nimi + "weeee";
-        String text = this.alku + "faef";
         trayIcon.displayMessage(caption, text, TrayIcon.MessageType.INFO);
     }
 
