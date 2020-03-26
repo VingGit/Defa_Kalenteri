@@ -331,7 +331,7 @@ public class Kayttoliittyma {
                     System.out.print("  Kest\u00E4\u00E4k\u00F6 tapahtuma nykyisen p\u00E4iv\u00E4n yli? (k/e): ");
                     syote = lukija.nextLine();
                     if (syote.equals("k")) {
-                        System.out.print("  Anna lopetuspäivä: ");
+                        System.out.print("  Anna lopetusp\u00E4iv\u00E4: ");
                         syote = lukija.nextLine();
                         LocalDate lopetusPvm = syotePaivamaaraksi(syote);
 
@@ -342,7 +342,7 @@ public class Kayttoliittyma {
                         lopetus = LocalDateTime.of(lopetusPvm, lopetusAika);
 
                         if (lopetus.isBefore(aloitus)) {
-                            System.out.println("  Lopetusaika on ennen aloitusaikaa! Syötö kelvollinen lopetusaika!");
+                            System.out.println("  Lopetusaika on ennen aloitusaikaa! Sy\u00F6t\u00E4 kelvollinen lopetusaika!");
                             continue;
                         }
 
