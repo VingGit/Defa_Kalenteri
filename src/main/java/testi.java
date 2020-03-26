@@ -26,15 +26,11 @@ public class testi {
 
     public static void main (String args[]) {
 
-        LocalDateTime date1 = LocalDateTime.of(LocalDate.of(2019,3,8), LocalTime.of(12,0));
-        LocalDateTime date = LocalDateTime.of(LocalDate.of(2021,3,8), LocalTime.of(12,1));
-        LocalDateTime date2 = LocalDateTime.of(LocalDate.of(2021,3,8), LocalTime.of(12,0));
-
-        if ( date.isAfter(date1)  &&  date.isBefore(date2)   ||
-                date.isEqual(date1)  ||
-                date.isEqual(date2)               ) {
-            System.out.println("totta");
-        }
+        char escCode = 0x1B;
+        int row = 10; int column = 10;
+        System.out.println("hei");
+        System.out.print(String.format("%c[%d;%df",escCode,row,column));
+        System.out.println("moi");
     }
 
 }

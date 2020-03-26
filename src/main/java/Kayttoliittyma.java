@@ -250,11 +250,13 @@ public class Kayttoliittyma {
             case "1":
                 System.out.println();
                 lisaaTapahtuma();
+                clrscr();
                 break;
 
             case "2":
                 System.out.println();
                 lisaaTehtava();
+                clrscr();
                 break;
 
             case "3":
@@ -356,6 +358,11 @@ public class Kayttoliittyma {
 
                         LocalDate lopetusPvm = LocalDate.of(this.kalenteri.annaPvm().getYear(), this.kalenteri.annaPvm().getMonth().getValue(), this.kalenteri.annaPvm().getDayOfMonth());
                         lopetus = LocalDateTime.of(lopetusPvm, lopetusAika);
+
+                        if (lopetus.isBefore(aloitus)) {
+                            System.out.println("  Lopetusaika on ennen aloitusaikaa! Sy\u00F6t\u00E4 kelvollinen lopetusaika!");
+                            continue;
+                        }
 
                         tapahtuma.asetaLopetus(lopetus);
                         break;
