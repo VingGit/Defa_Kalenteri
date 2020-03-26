@@ -82,7 +82,7 @@ public class Merkinta implements Serializable {
                 e.printStackTrace();
             }
             //write your code here
-            System.out.println("hei");
+            //System.out.println("hei");
         }
     }
     public void displayTray(String caption, String text) throws AWTException, MalformedURLException {

@@ -527,7 +527,7 @@ public class Kayttoliittyma {
 
     private void poistaTehtava() {
         while (true) {
-            System.out.print("  Kirjoita poistettavan teht\u00E4v\u00E4n nimi (syötä d poistaaksesi kaikki): ");
+            System.out.print("  Kirjoita poistettavan teht\u00E4v\u00E4n nimi (Sy\u00F6t\u00E4 d poistaaksesi kaikki): ");
             String tehtava = lukija.nextLine();
             if (tehtava.equals("c")) {
                 break;
