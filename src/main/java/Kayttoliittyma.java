@@ -298,7 +298,7 @@ public class Kayttoliittyma {
     private void lisaaTapahtuma() throws ParseException {
         String syote;
         while (true) {
-            System.out.print("  Nime\u00E4 tapahtuma: ");
+            System.out.print("  Nime\u00E4 tapahtuma (c - takaisin): ");
             syote = lukija.nextLine();
             if (syote.equals("c")) {
                 clrscr();
@@ -444,7 +444,7 @@ public class Kayttoliittyma {
     private void lisaaTehtava() throws ParseException {
         String syote;
         while (true) {
-            System.out.print("  Nime\u00E4 teht\u00E4v\u00E4: ");
+            System.out.print("  Nime\u00E4 teht\u00E4v\u00E4 (c - takaisin): ");
             syote = lukija.nextLine();
             if (syote.equals("c")) {
                 clrscr();
@@ -498,7 +498,7 @@ public class Kayttoliittyma {
 
     private void poistaTapahtuma() {
         while (true) {
-            System.out.print("  Kirjoita poistettavan tapahtuman nimi (sy\u00F6t\u00E4 d poistaaksesi kaikki): ");
+            System.out.print("  Kirjoita poistettavan tapahtuman nimi. Sy\u00F6t\u00E4 d poistaaksesi kaikki (c - takaisin): ");
             String tapahtuma = lukija.nextLine();
             if (tapahtuma.equals("c")) {
                 clrscr();
@@ -528,7 +528,7 @@ public class Kayttoliittyma {
 
     private void poistaTehtava() {
         while (true) {
-            System.out.print("  Kirjoita poistettavan teht\u00E4v\u00E4n nimi (Sy\u00F6t\u00E4 d poistaaksesi kaikki): ");
+            System.out.print("  Kirjoita poistettavan teht\u00E4v\u00E4n nimi. Sy\u00F6t\u00E4 d poistaaksesi kaikki (c - takaisin): ");
             String tehtava = lukija.nextLine();
             if (tehtava.equals("c")) {
                 clrscr();
@@ -639,14 +639,19 @@ public class Kayttoliittyma {
     }
 
     public void tulostaKomentoOhje() {
+        String kuukausiTaiVuosiNakyma = "4 - n\u00E4yt\u00E4 vuosin\u00E4kym\u00E4";
+        if (!this.tulostaKuukausinakyma) {
+            kuukausiTaiVuosiNakyma = "4 - n\u00E4yt\u00E4 kuukausin\u00E4kym\u00E4";
+        }
+
         System.out.println("  ---- Liikkumiskomennot -----         ----------- Muut komennot -----------");
         System.out.println("   d - liiku oikealle                    1 - lis\u00E4\u00E4 tapahtuma");
         System.out.println("   a - liiku vasemmalle                  2 - lis\u00E4\u00E4 teht\u00E4v\u00E4");
         System.out.println("   w - liiku yl\u00F6s                        3 - tarkastele p\u00E4iv\u00E4\u00E4");
-        System.out.println("   s - liikus alas                       4 - n\u00E4yt\u00E4 vuosin\u00E4kym\u00E4");
-        System.out.println("   e - seuraava kuukausi                 c - mene taaksep\u00E4in");
-        System.out.println("   q - edellinen kuukausi                x - lopeta");
-        System.out.println("   ee - seuraava vuosi                   v - piilota komennot");
+        System.out.println("   s - liikus alas" + "                       " + kuukausiTaiVuosiNakyma);
+        System.out.println("   e - seuraava kuukausi                 x - lopeta");
+        System.out.println("   q - edellinen kuukausi                v - piilota komennot");
+        System.out.println("   ee - seuraava vuosi");
         System.out.println("   qq - edellinen vuosi");
         System.out.println("   p - vaihda p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4\u00E4");
         System.out.println("   t - t\u00E4m\u00E4 p\u00E4iv\u00E4");
