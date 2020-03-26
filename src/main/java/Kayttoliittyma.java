@@ -501,6 +501,7 @@ public class Kayttoliittyma {
             System.out.print("  Kirjoita poistettavan tapahtuman nimi (sy\u00F6t\u00E4 d poistaaksesi kaikki): ");
             String tapahtuma = lukija.nextLine();
             if (tapahtuma.equals("c")) {
+                clrscr();
                 break;
             }
 
@@ -530,6 +531,7 @@ public class Kayttoliittyma {
             System.out.print("  Kirjoita poistettavan teht\u00E4v\u00E4n nimi (Sy\u00F6t\u00E4 d poistaaksesi kaikki): ");
             String tehtava = lukija.nextLine();
             if (tehtava.equals("c")) {
+                clrscr();
                 break;
             }
 
