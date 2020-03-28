@@ -1,6 +1,4 @@
-import java.awt.*;
 import java.io.*;
-import java.net.MalformedURLException;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.text.ParseException;
@@ -8,8 +6,6 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Kayttoliittyma {
@@ -326,7 +322,7 @@ public class Kayttoliittyma {
                 System.out.print("  Aseta alkamisaika. Sy\u00F6t\u00E4 a jos tapahtuma kest\u00E4\u00E4 koko p\u00E4iv\u00E4n: ");
                 syote = lukija.nextLine();
                 if (syote.equals("a")) {
-                    tapahtuma.asetaAloitus(aloitus);
+                    tapahtuma.asetaAjankohta(aloitus);
                     tapahtuma.asetaLopetus(aloitus);
                     break;
                 }
@@ -335,7 +331,7 @@ public class Kayttoliittyma {
 
                 aloitus = LocalDateTime.of(this.kalenteri.annaPvm().getYear(), this.kalenteri.annaPvm().getMonth().getValue(), this.kalenteri.annaPvm().getDayOfMonth(), aloitusKellonaika.getHour(), aloitusKellonaika.getMinute());
 
-                tapahtuma.asetaAloitus(aloitus);
+                tapahtuma.asetaAjankohta(aloitus);
 
                 // lopetusajan asetus
                 LocalDateTime lopetus;
@@ -474,7 +470,7 @@ public class Kayttoliittyma {
             System.out.print("  Aseta kellonaika: ");
             syote = lukija.nextLine();
             LocalTime aika = syoteKellonajaksi(syote);
-            tehtava.asetaAloitus(this.kalenteri.annaPvm().getYear(), this.kalenteri.annaPvm().getMonthValue(), this.kalenteri.annaPvm().getDayOfMonth(), aika.getHour(), aika.getMinute());
+            tehtava.asetaAjankohta(this.kalenteri.annaPvm().getYear(), this.kalenteri.annaPvm().getMonthValue(), this.kalenteri.annaPvm().getDayOfMonth(), aika.getHour(), aika.getMinute());
 
             while (true) {
                 System.out.print("  Haluatko asettaa muistiinpanoja (k/e): ");

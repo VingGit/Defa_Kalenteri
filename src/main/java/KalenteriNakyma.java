@@ -59,8 +59,8 @@ public abstract class KalenteriNakyma {
                 // Onko päivässä tapahtuma?
                 LocalDate pvm = (LocalDate.of(vuosi, kuukausi, j));
                 for (Tapahtuma t : tapahtumat) {
-                    if (pvm.isAfter(t.annaAloitus().toLocalDate())  &&  (pvm.isBefore(t.annaLopetus().toLocalDate()))  ||
-                            pvm.isEqual(t.annaAloitus().toLocalDate())  ||
+                    if (pvm.isAfter(t.annaAjankohta().toLocalDate())  &&  (pvm.isBefore(t.annaLopetus().toLocalDate()))  ||
+                            pvm.isEqual(t.annaAjankohta().toLocalDate())  ||
                             pvm.isEqual(t.annaLopetus().toLocalDate())) {
                         System.out.print(Varit.GREEN);
 
@@ -69,7 +69,7 @@ public abstract class KalenteriNakyma {
 
                 // Onko päivässä tehtävä?
                 for (Tehtava t : tehtavat) {
-                    if (pvm.isEqual(t.annaAloitus().toLocalDate())) {
+                    if (pvm.isEqual(t.annaAjankohta().toLocalDate())) {
                         System.out.print(Varit.GREEN);
                     }
                 }

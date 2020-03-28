@@ -24,7 +24,7 @@ public class Tehtava extends Merkinta {
         DateTimeFormatter formatter;
         formatter = DateTimeFormatter.ofPattern("HH:mm");
 
-        String aika = this.alku.format(formatter);
+        String aika = this.ajankohta.format(formatter);
 
         return this.nimi + ", " + aika;
     }
@@ -34,8 +34,8 @@ public class Tehtava extends Merkinta {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d.M.Y HH:mm");
 
         String muistutus;
-        if (this.muistutus != null) {
-            muistutus = "Muistutetaan ";// + this.muistutus.format(formatter);
+        if (this.muistutusAika != null) {
+            muistutus = "Muistutetaan " + this.muistutusAika.format(formatter);
         } else {
             muistutus = "Ei muistutusta";
         }
@@ -45,6 +45,6 @@ public class Tehtava extends Merkinta {
             muistiinpanot = "-";
         }
 
-        return this.nimi + "\n  Aika: " + this.alku.format(formatter) + "\n  Muistiinpanot: " + muistiinpanot + "\n  Muistutus: " + muistutus;
+        return this.nimi + "\n  Aika: " + this.ajankohta.format(formatter) + "\n  Muistiinpanot: " + muistiinpanot + "\n  Muistutus: " + muistutus;
     }
 }

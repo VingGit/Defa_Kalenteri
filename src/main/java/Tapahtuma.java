@@ -3,11 +3,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Tapahtuma extends Merkinta {
 
-    private LocalDateTime loppu;
+    private LocalDateTime lopetusAjankohta;
     private  String kuvaus;
     private String paikka;
     private  ArrayList<String> osallistujat;
@@ -24,19 +23,19 @@ public class Tapahtuma extends Merkinta {
 
 
     public void asetaLopetus(int vuosi, int kuukausi, int paiva, int tunnit, int minuutit) {
-        this.loppu = LocalDateTime.of(LocalDate.of(vuosi, kuukausi, paiva), LocalTime.of(tunnit, minuutit));
+        this.lopetusAjankohta = LocalDateTime.of(LocalDate.of(vuosi, kuukausi, paiva), LocalTime.of(tunnit, minuutit));
     }
 
     public void asetaLopetus(LocalDate pvm, LocalTime aika) {
-        this.loppu = LocalDateTime.of(pvm, aika);
+        this.lopetusAjankohta = LocalDateTime.of(pvm, aika);
     }
 
     public void asetaLopetus(LocalDateTime pvmAika) {
-        this.loppu = pvmAika;
+        this.lopetusAjankohta = pvmAika;
     }
 
     public LocalDateTime annaLopetus() {
-        return this.loppu;
+        return this.lopetusAjankohta;
     }
 
     public void asetaKuvaus(String kuvaus) {
@@ -68,7 +67,7 @@ public class Tapahtuma extends Merkinta {
     }
 
     public boolean ulottuukoToiseenPaivaan() {
-        if (this.alku.getDayOfMonth() != this.loppu.getDayOfMonth()) {
+        if (this.ajankohta.getDayOfMonth() != this.lopetusAjankohta.getDayOfMonth()) {
             return true;
         }
         return false;
@@ -81,12 +80,12 @@ public class Tapahtuma extends Merkinta {
 
         String aikaVali;
         if (ulottuukoToiseenPaivaan()) {
-            aikaVali = this.alku.format(formatter) + " - " + this.loppu.format(formatter);
+            aikaVali = this.ajankohta.format(formatter) + " - " + this.lopetusAjankohta.format(formatter);
         } else {
-            aikaVali = this.alku.format(formatter2) + " - " + this.loppu.format(formatter2);
+            aikaVali = this.ajankohta.format(formatter2) + " - " + this.lopetusAjankohta.format(formatter2);
 
         }
-        if (this.alku.isEqual(this.loppu)) {
+        if (this.ajankohta.isEqual(this.lopetusAjankohta)) {
             aikaVali = "Koko p\u00E4iv\u00E4n";
         }
 
@@ -109,11 +108,11 @@ public class Tapahtuma extends Merkinta {
         }
 
         String muistutus;
-        if (this.muistutus != null) {
+        if (this.muistutusAika != null) {
             if (ulottuukoToiseenPaivaan()) {
-                muistutus = "Muistutetaan " ;//+ this.muistutus.format(formatter);
+                muistutus = "Muistutetaan " + this.muistutusAika.format(formatter);
             } else {
-                muistutus = "Muistutetaan " ;//+ this.muistutus.format(formatter2);
+                muistutus = "Muistutetaan " + this.muistutusAika.format(formatter2);
             }
         } else {
             muistutus = "Ei p\u00E4\u00E4ll\u00E4";
@@ -130,9 +129,9 @@ public class Tapahtuma extends Merkinta {
             formatter = DateTimeFormatter.ofPattern("HH:mm");
         }
 
-        String aikaVali = this.alku.format(formatter) + " - " + this.loppu.format(formatter);
+        String aikaVali = this.ajankohta.format(formatter) + " - " + this.lopetusAjankohta.format(formatter);
 
-        if (this.alku.isEqual(this.loppu)) {
+        if (this.ajankohta.isEqual(this.lopetusAjankohta)) {
             aikaVali = "Koko p\u00E4iv\u00E4n";
         }
 

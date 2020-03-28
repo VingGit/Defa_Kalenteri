@@ -2,7 +2,6 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -57,7 +56,7 @@ public class Kalenteri {
             for (Merkinta m : this.muistutukset) {
 
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                String formattedDateTime = m.muistutus.format(formatter);
+                String formattedDateTime = m.muistutusAika.format(formatter);
                 Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(formattedDateTime);
 
                 Timer timer = new Timer();
@@ -103,8 +102,8 @@ public class Kalenteri {
         
     public boolean poistaPaivanTapahtumat() {
         return this.tapahtumat.removeIf(i ->
-            (this.pvm.isAfter(i.annaAloitus().toLocalDate())  &&  (this.pvm.isBefore(i.annaLopetus().toLocalDate()))  ||
-             this.pvm.isEqual(i.annaAloitus().toLocalDate())  ||
+            (this.pvm.isAfter(i.annaAjankohta().toLocalDate())  &&  (this.pvm.isBefore(i.annaLopetus().toLocalDate()))  ||
+             this.pvm.isEqual(i.annaAjankohta().toLocalDate())  ||
              this.pvm.isEqual(i.annaLopetus().toLocalDate())));
     }
 
@@ -114,8 +113,8 @@ public class Kalenteri {
     
     public boolean onkoTapahtumia() {
         for (Tapahtuma t : this.tapahtumat) {
-            if ( this.pvm.isAfter(t.annaAloitus().toLocalDate())  &&  (this.pvm.isBefore(t.annaLopetus().toLocalDate()))  ||
-                 this.pvm.isEqual(t.annaAloitus().toLocalDate())  ||
+            if ( this.pvm.isAfter(t.annaAjankohta().toLocalDate())  &&  (this.pvm.isBefore(t.annaLopetus().toLocalDate()))  ||
+                 this.pvm.isEqual(t.annaAjankohta().toLocalDate())  ||
                  this.pvm.isEqual(t.annaLopetus().toLocalDate()))  {
                  return true;
             }
@@ -128,11 +127,11 @@ public class Kalenteri {
     }
 
     public boolean poistaTehtava(String poistettavanNimi) {
-        return this.tehtavat.removeIf(i -> this.pvm.isEqual(i.annaAloitus().toLocalDate()) && poistettavanNimi.equals(i.annaNimi()));
+        return this.tehtavat.removeIf(i -> this.pvm.isEqual(i.annaAjankohta().toLocalDate()) && poistettavanNimi.equals(i.annaNimi()));
     }
     
     public boolean poistaPaivanTehtavat() {
-        return this.tehtavat.removeIf(i -> this.pvm.isEqual(i.annaAloitus().toLocalDate()));
+        return this.tehtavat.removeIf(i -> this.pvm.isEqual(i.annaAjankohta().toLocalDate()));
     }
 
     public ArrayList<Tehtava> annaTehtavaLista() {
@@ -141,7 +140,7 @@ public class Kalenteri {
 
     public boolean onkoTehtavia() {
         for (Tehtava t : this.tehtavat) {
-            if (this.pvm.isEqual(t.annaAloitus().toLocalDate())) {
+            if (this.pvm.isEqual(t.annaAjankohta().toLocalDate())) {
                 return true;
             }
         }
@@ -162,7 +161,7 @@ public class Kalenteri {
     public ArrayList<Tapahtuma> annaKuukaudenTapahtumat() {
         ArrayList<Tapahtuma> kuukaudenTapahtumat = new ArrayList<>();
         for (Tapahtuma t : this.tapahtumat) {
-            if (t.annaAloitus().getMonthValue() == this.pvm.getMonthValue() && t.annaAloitus().getYear() == this.pvm.getYear()) {
+            if (t.annaAjankohta().getMonthValue() == this.pvm.getMonthValue() && t.annaAjankohta().getYear() == this.pvm.getYear()) {
                 kuukaudenTapahtumat.add(t);
             }
         }
@@ -173,7 +172,7 @@ public class Kalenteri {
         ArrayList<Tehtava> kuukaudenTehtavat = new ArrayList<>();
         for (Tehtava t : this.tehtavat) {
 
-            if (t.annaAloitus().getMonthValue() == this.pvm.getMonthValue() && t.annaAloitus().getYear() == this.pvm.getYear()) {
+            if (t.annaAjankohta().getMonthValue() == this.pvm.getMonthValue() && t.annaAjankohta().getYear() == this.pvm.getYear()) {
                 kuukaudenTehtavat.add(t);
             }
         }
@@ -374,8 +373,8 @@ public class Kalenteri {
 
         if (onkoTapahtumia()) {
             for (Tapahtuma t : this.tapahtumat) {
-                if (this.pvm.isAfter(t.annaAloitus().toLocalDate())  &&  (this.pvm.isBefore(t.annaLopetus().toLocalDate()))  ||
-                        this.pvm.isEqual(t.annaAloitus().toLocalDate())  ||
+                if (this.pvm.isAfter(t.annaAjankohta().toLocalDate())  &&  (this.pvm.isBefore(t.annaLopetus().toLocalDate()))  ||
+                        this.pvm.isEqual(t.annaAjankohta().toLocalDate())  ||
                         this.pvm.isEqual(t.annaLopetus().toLocalDate()))  {
 
                     System.out.print(Varit.GREEN);
@@ -389,13 +388,13 @@ public class Kalenteri {
         System.out.println("  ------------ Teht\u00E4v\u00E4t ------------ ");
 
         if (!onkoTehtavia()) {
-            System.out.println("    Ei tehtavi\u00E4");
+            System.out.println("    Ei teht\u00E4vi\u00E4");
             System.out.println();
         }
 
         if (onkoTehtavia()) {
             for (Tehtava t : this.tehtavat) {
-                if (this.pvm.isEqual(t.annaAloitus().toLocalDate())) {
+                if (this.pvm.isEqual(t.annaAjankohta().toLocalDate())) {
                     System.out.print(Varit.GREEN);
                     System.out.println("  " + t.toString());
                     System.out.print(Varit.RESET);
@@ -412,7 +411,7 @@ public class Kalenteri {
             Map.Entry pair = (Map.Entry)it.next();
             if ( today.equals(pair.getKey()) ) {
                 System.out.print(Varit.RED);
-                System.out.println("  " + pair.getValue());
+                System.out.println("   " + pair.getValue());
                 System.out.print(Varit.RESET);
             }
         }
@@ -429,8 +428,8 @@ public class Kalenteri {
         }
 
         for (Tapahtuma t : this.tapahtumat) {
-            if (this.pvm.isAfter(t.annaAloitus().toLocalDate())  &&  (this.pvm.isBefore(t.annaLopetus().toLocalDate()))  ||
-                this.pvm.isEqual(t.annaAloitus().toLocalDate())  ||
+            if (this.pvm.isAfter(t.annaAjankohta().toLocalDate())  &&  (this.pvm.isBefore(t.annaLopetus().toLocalDate()))  ||
+                this.pvm.isEqual(t.annaAjankohta().toLocalDate())  ||
                 this.pvm.isEqual(t.annaLopetus().toLocalDate()))  {
 
                 System.out.print(Varit.GREEN);
@@ -440,7 +439,7 @@ public class Kalenteri {
         }
 
         for (Tehtava t : this.tehtavat) {
-            if (this.pvm.isEqual(t.annaAloitus().toLocalDate())) {
+            if (this.pvm.isEqual(t.annaAjankohta().toLocalDate())) {
                 System.out.print(Varit.GREEN);
                 System.out.println("   " + t.toStringLyhyt());
                 System.out.print(Varit.RESET);
@@ -459,7 +458,7 @@ public class Kalenteri {
         boolean onkoMuistutusPaalla = false;
         for (Tapahtuma t : annaKuukaudenTapahtumat()) {
             if (t.onkoMuistutus()) {
-                System.out.println("   " + t.annaNimi() + ", " + t.annaAloitus().getDayOfMonth() + ". p\u00E4iv\u00E4");
+                System.out.println("   " + t.annaNimi() + ", " + t.annaAjankohta().getDayOfMonth() + ". p\u00E4iv\u00E4");
                 onkoMuistutusPaalla = true;
             }
         }
@@ -467,7 +466,7 @@ public class Kalenteri {
         for (Tehtava t : annaKuukaudenTehtavat()) {
             t.toString();
             if (t.onkoMuistutus()) {
-                System.out.println("   " + t.annaNimi() + ", " + t.annaAloitus().getDayOfMonth() + ". p\u00E4iv\u00E4");
+                System.out.println("   " + t.annaNimi() + ", " + t.annaAjankohta().getDayOfMonth() + ". p\u00E4iv\u00E4");
                 onkoMuistutusPaalla = true;
             }
         }
