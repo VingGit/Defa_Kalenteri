@@ -35,7 +35,7 @@ public class Tehtava extends Merkinta {
 
         String muistutus;
         if (this.muistutus != null) {
-            muistutus = "Muistutetaan " + this.muistutus.format(formatter);
+            muistutus = "Muistutetaan ";// + this.muistutus.format(formatter);
         } else {
             muistutus = "Ei muistutusta";
         }

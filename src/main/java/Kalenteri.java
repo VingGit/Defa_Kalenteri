@@ -1,4 +1,5 @@
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Month;
@@ -12,6 +13,7 @@ public class Kalenteri {
     private HashMap juhlat;
     private ArrayList<Tapahtuma> tapahtumat;
     private ArrayList<Tehtava> tehtavat;
+    private ArrayList<Merkinta> muistutukset;
 
     public Kalenteri() {
         this.pvm = LocalDate.now();
@@ -45,12 +47,44 @@ public class Kalenteri {
         } catch (Exception e) {
             this.tehtavat = new ArrayList<>();
         }
+
+        try {
+            FileInputStream fis = new FileInputStream("MuistutusData");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+
+            this.muistutukset = (ArrayList) ois.readObject();
+
+            for (Merkinta m : this.muistutukset) {
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                String formattedDateTime = m.muistutus.format(formatter);
+                Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(formattedDateTime);
+
+                Timer timer = new Timer();
+                timer.schedule(m, date);
+            }
+
+
+            ois.close();
+            fis.close();
+
+        } catch (Exception e) {
+            this.muistutukset = new ArrayList<>();
+        }
     }
 
 
 
     public LocalDate annaPvm() {
         return this.pvm;
+    }
+
+    public void asetaMuistutus(Merkinta merkinta) {
+        this.muistutukset.add(merkinta);
+    }
+
+    public ArrayList<Merkinta> annaMuistutusLista() {
+        return this.muistutukset;
     }
 
 
@@ -128,8 +162,7 @@ public class Kalenteri {
     public ArrayList<Tapahtuma> annaKuukaudenTapahtumat() {
         ArrayList<Tapahtuma> kuukaudenTapahtumat = new ArrayList<>();
         for (Tapahtuma t : this.tapahtumat) {
-            if (t.annaAloitus().getMonthValue() == this.pvm.getMonthValue()  /*||
-                Integer.valueOf(t.annaLopetus().getMonthValue()) == this.pvm.getMonthValue()*/ ) {
+            if (t.annaAloitus().getMonthValue() == this.pvm.getMonthValue() && t.annaAloitus().getYear() == this.pvm.getYear()) {
                 kuukaudenTapahtumat.add(t);
             }
         }
@@ -140,7 +173,7 @@ public class Kalenteri {
         ArrayList<Tehtava> kuukaudenTehtavat = new ArrayList<>();
         for (Tehtava t : this.tehtavat) {
 
-            if (t.annaAloitus().getMonthValue() == this.pvm.getMonthValue()) {
+            if (t.annaAloitus().getMonthValue() == this.pvm.getMonthValue() && t.annaAloitus().getYear() == this.pvm.getYear()) {
                 kuukaudenTehtavat.add(t);
             }
         }

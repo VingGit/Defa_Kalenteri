@@ -12,19 +12,66 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Merkinta implements Serializable {
+public class Merkinta extends TimerTask implements Serializable {
 
     protected String nimi;
     protected LocalDateTime alku;
     protected LocalDateTime muistutus;
 
-    public Merkinta() {}
+
+
+
+
+    @Override
+    public void run() {
+
+        Merkinta app = this;
+
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d.M.y  HH:mm");
+            app.displayTray(this.nimi, this.alku.format(formatter));
+        } catch (AWTException | MalformedURLException e) {
+            e.printStackTrace();
+        }
+        //write your code here
+        //System.out.println("hei");
+    }
+
+    public void displayTray(String caption, String text) throws AWTException, MalformedURLException {
+        //Obtain only one instance of the SystemTray object
+        SystemTray tray = SystemTray.getSystemTray();
+
+        //If the icon is a file
+        Image image = Toolkit.getDefaultToolkit().createImage("icon.png");
+        //Alternative (if the icon is on the classpath):
+        //Image image = Toolkit.getDefaultToolkit().createImage(getClass().getResource("icon.png"));
+
+        TrayIcon trayIcon = new TrayIcon(image, "Java AWT Tray Demo");
+        //Let the system resize the image if needed
+        trayIcon.setImageAutoSize(true);
+        //Set tooltip text for the tray icon
+        trayIcon.setToolTip("System tray icon demo");
+        tray.add(trayIcon);
+
+        trayIcon.displayMessage(caption, text, TrayIcon.MessageType.INFO);
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     public Merkinta(String nimi) {
         this.nimi = nimi;
     }
 
-
+    public Merkinta() {}
 
     public void asetaNimi(String nimi) {
         this.nimi = nimi;
@@ -60,9 +107,9 @@ public class Merkinta implements Serializable {
         Timer timer = new Timer();
 
         //Use this if you want to execute it once
-        timer.schedule(new MyTimeTask(this.nimi, this.alku), date);
+        timer.schedule(this, date);
     }
-
+/*
     private static class MyTimeTask extends TimerTask {
         private String nimi;
         private LocalDateTime aika;
@@ -85,24 +132,9 @@ public class Merkinta implements Serializable {
             //System.out.println("hei");
         }
     }
-    public void displayTray(String caption, String text) throws AWTException, MalformedURLException {
-        //Obtain only one instance of the SystemTray object
-        SystemTray tray = SystemTray.getSystemTray();
 
-        //If the icon is a file
-        Image image = Toolkit.getDefaultToolkit().createImage("icon.png");
-        //Alternative (if the icon is on the classpath):
-        //Image image = Toolkit.getDefaultToolkit().createImage(getClass().getResource("icon.png"));
+ */
 
-        TrayIcon trayIcon = new TrayIcon(image, "Java AWT Tray Demo");
-        //Let the system resize the image if needed
-        trayIcon.setImageAutoSize(true);
-        //Set tooltip text for the tray icon
-        trayIcon.setToolTip("System tray icon demo");
-        tray.add(trayIcon);
-
-        trayIcon.displayMessage(caption, text, TrayIcon.MessageType.INFO);
-    }
 
     public void poistaMuistutus() {
         this.muistutus = null;

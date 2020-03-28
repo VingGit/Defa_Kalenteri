@@ -111,9 +111,9 @@ public class Tapahtuma extends Merkinta {
         String muistutus;
         if (this.muistutus != null) {
             if (ulottuukoToiseenPaivaan()) {
-                muistutus = "Muistutetaan " + this.muistutus.format(formatter);
+                muistutus = "Muistutetaan " ;//+ this.muistutus.format(formatter);
             } else {
-                muistutus = "Muistutetaan " + this.muistutus.format(formatter2);
+                muistutus = "Muistutetaan " ;//+ this.muistutus.format(formatter2);
             }
         } else {
             muistutus = "Ei p\u00E4\u00E4ll\u00E4";

@@ -78,7 +78,7 @@ public class Kayttoliittyma {
             String syote = this.lukija.nextLine();
             if (syote.equals("x")) {
 
-                // Lopetetaaan ohjelma ja tallennetaan käyttäjän asettamat tapahtumat, tehtävät sekä asetus komento-ohjeiden näyttämisestä.
+                // Lopetetaaan ohjelma ja tallennetaan käyttäjän asettamat tapahtumat, tehtävät, muistutukset sekä asetus komento-ohjeiden näyttämisestä.
                 try {
                     FileOutputStream fos = new FileOutputStream("TapahtumaData");
                     ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -93,6 +93,16 @@ public class Kayttoliittyma {
                     FileOutputStream fos = new FileOutputStream("TehtavaData");
                     ObjectOutputStream oos = new ObjectOutputStream(fos);
                     oos.writeObject(this.kalenteri.annaTehtavaLista());
+                    oos.close();
+                    fos.close();
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
+                }
+
+                try {
+                    FileOutputStream fos = new FileOutputStream("MuistutusData");
+                    ObjectOutputStream oos = new ObjectOutputStream(fos);
+                    oos.writeObject(this.kalenteri.annaMuistutusLista());
                     oos.close();
                     fos.close();
                 } catch (IOException ioe) {
@@ -435,6 +445,7 @@ public class Kayttoliittyma {
                     LocalTime aika = syoteKellonajaksi(syote);
 
                     tapahtuma.asetaMuistutus(LocalDateTime.of(pvm,aika));
+                    this.kalenteri.asetaMuistutus(tapahtuma);
                     break;
 
                 } else if (vastaus.equals("e")) {
@@ -491,6 +502,7 @@ public class Kayttoliittyma {
                     aika = syoteKellonajaksi(syote);
 
                     tehtava.asetaMuistutus(LocalDateTime.of(pvm,aika));
+                    this.kalenteri.asetaMuistutus(tehtava);
                     break;
 
                 } else if (vastaus.equals("e")) {
