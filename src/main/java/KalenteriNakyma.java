@@ -73,7 +73,7 @@ public abstract class KalenteriNakyma {
 
                 System.out.print("   ");
 
-                if (j == paiva && !onkoKuukausi&& M == Kayttoliittyma.eteenTaakseKuukausia) {
+                if (j == paiva && !onkoKuukausi&& M == Kalenteri.eteenTaakseKuukausia) {
                     System.out.print(Varit.CYAN_BACKGROUND);
                 }
                 else if(j == paiva && onkoKuukausi){

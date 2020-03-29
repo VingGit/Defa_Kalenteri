@@ -15,14 +15,10 @@ public class Kayttoliittyma {
     private  Kalenteri kalenteri;
     private boolean tulostaKomentoOhje;
     private boolean tulostaKuukausinakyma;
-    public static int eteenTaakseKuukausia;
-    private LocalDate pvm2;
 
     public Kayttoliittyma(Scanner lukija, Kalenteri kalenteri) {
         this.kalenteri = kalenteri;
         this.lukija = lukija;
-        this.pvm2 = LocalDate.now();
-        eteenTaakseKuukausia = pvm2.getMonthValue();
 
         // Yritetään hakea tallennettua asetusta ohjeen tulostamisesta.
         try {
@@ -175,24 +171,11 @@ public class Kayttoliittyma {
 
             case "e":
                 clrscr();
-                if (eteenTaakseKuukausia < 13){
-                    eteenTaakseKuukausia++;
-                }
-                if (eteenTaakseKuukausia == 13){
-                    eteenTaakseKuukausia = 1;
-                }
                 this.kalenteri.seuraavaKuukausi();
                 break;
 
             case "q":
                 clrscr();
-                if(eteenTaakseKuukausia > 0){
-                    eteenTaakseKuukausia--;
-                }
-                if(eteenTaakseKuukausia == 0){
-
-                    eteenTaakseKuukausia = 12;
-                }
                 this.kalenteri.edellinenKuukausi();
                 break;
 

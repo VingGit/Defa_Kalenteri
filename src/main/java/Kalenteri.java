@@ -13,6 +13,9 @@ public class Kalenteri {
     private ArrayList<Tapahtuma> tapahtumat;
     private ArrayList<Tehtava> tehtavat;
     private ArrayList<Merkinta> muistutukset;
+    // Seuraavat kaksi vuosinäkymän tulostusta varten.
+    public static int eteenTaakseKuukausia;
+    private LocalDate pvm2;
 
     public Kalenteri() {
         this.pvm = LocalDate.now();
@@ -70,6 +73,9 @@ public class Kalenteri {
         } catch (Exception e) {
             this.muistutukset = new ArrayList<>();
         }
+
+        this.pvm2 = LocalDate.now();
+        eteenTaakseKuukausia = pvm2.getMonthValue();
     }
 
     /**___________________TAPAHTUMIIN/TEHTÄVIIN/JUHLIIN LIITTYVÄT METODIT______________________________________
@@ -273,6 +279,12 @@ public class Kalenteri {
             this.juhlat.clear();
             Juhlapyhat.asetaJuhlat(this.juhlat, this.pvm.getYear());
         }
+        if (eteenTaakseKuukausia < 13){
+            eteenTaakseKuukausia++;
+        }
+        if (eteenTaakseKuukausia == 13){
+            eteenTaakseKuukausia = 1;
+        }
     }
     
     public void edellinenKuukausi() {
@@ -281,6 +293,13 @@ public class Kalenteri {
         if (vuosiTallenna != this.pvm.getYear()) {
             this.juhlat.clear();
             Juhlapyhat.asetaJuhlat(this.juhlat, this.pvm.getYear());
+        }
+        if(eteenTaakseKuukausia > 0){
+            eteenTaakseKuukausia--;
+        }
+        if(eteenTaakseKuukausia == 0){
+
+            eteenTaakseKuukausia = 12;
         }
     }
 
