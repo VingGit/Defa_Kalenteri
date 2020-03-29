@@ -481,7 +481,7 @@ public class Kayttoliittyma {
         }
 
         while (true) {
-            System.out.print("  Aseta muistutuksen ajankohta muodossa p.k.v tt.mm (ENTER ohita): ");
+            System.out.print("  Aseta muistutuksen ajankohta muodossa p.k.v tt.mm (esim. 27.5.2020 07.05). (ENTER ohita): ");
             syote = lukija.nextLine();
             if (syote.equals("")) {
                 break;
