@@ -10,14 +10,8 @@ public class Tehtava extends Merkinta {
         super(nimi);
     }
 
-
-
     public void asetaMuistiinpano(String kuvaus) {
         this.muistiinpanot = kuvaus;
-    }
-
-    public void poistaMuistiinpano() {
-        this.muistiinpanot = "";
     }
 
     public String toStringLyhyt() {

@@ -30,7 +30,11 @@ public class Tapahtuma extends Merkinta {
         this.lopetusAjankohta = LocalDateTime.of(pvm, aika);
     }
 
-    public void asetaLopetus(LocalDateTime pvmAika) {
+    public void asetaLopetus(LocalDateTime pvmAika) throws LoppuEnnenAlkuaException {
+        if (pvmAika.isBefore(this.ajankohta)) {
+            throw new LoppuEnnenAlkuaException();
+        }
+
         this.lopetusAjankohta = pvmAika;
     }
 

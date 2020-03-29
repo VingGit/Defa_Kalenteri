@@ -9,7 +9,7 @@ import java.util.Map;
 public abstract class Juhlapyhat {
 
     public static Map asetaJuhlat(HashMap juhlat, int vuosi) {
-        Map<LocalDate, String> juhlatpaivat = new HashMap<LocalDate, String>();
+        Map<LocalDate, String> juhlapaivat = new HashMap<LocalDate, String>();
 
         juhlat.put(LocalDate.of(vuosi, 1, 1), "Uuudenvuodenp\u00E4iv\u00E4");
         juhlat.put(LocalDate.of(vuosi, 1, 6), "Loppiainen");
@@ -25,7 +25,7 @@ public abstract class Juhlapyhat {
         juhlat.put(LocalDate.of(vuosi, 12, 25), "Joulup\u00E4iv\u00E4");
         juhlat.put(LocalDate.of(vuosi, 12, 26), "2. joulup\u00E4iv\u00E4d");
 
-        return juhlatpaivat;
+        return juhlapaivat;
     }
 
     private static LocalDate laskePitkaperjantai(int vuosi) {

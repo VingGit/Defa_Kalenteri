@@ -11,10 +11,7 @@ public abstract class KalenteriNakyma {
 
     public static int getDay(int year, int month) {
         LocalDate localDate = LocalDate.of(year, Month.of(month), 1);
-
-        // Find the day from the local date
         DayOfWeek dayOfWeek = DayOfWeek.from(localDate);
-
         return dayOfWeek.getValue();
     }
 
@@ -74,11 +71,9 @@ public abstract class KalenteriNakyma {
                     }
                 }
 
-                //System.out.printf(" %3d ", j);
-
                 System.out.print("   ");
 
-                if (j == paiva && !onkoKuukausi&& M==Kayttoliittyma.eteenTaakseKuukausia) {//pitäisi verrata kuukautta siihen kuukauteen, jossa nyt ollaan. nyt siinä on 5 mutta siihen tilalle pitäs saada joku sopiva getteri.
+                if (j == paiva && !onkoKuukausi&& M == Kayttoliittyma.eteenTaakseKuukausia) {
                     System.out.print(Varit.CYAN_BACKGROUND);
                 }
                 else if(j == paiva && onkoKuukausi){
@@ -99,7 +94,6 @@ public abstract class KalenteriNakyma {
         }
     }
 
-    // tää ei nyt ihan toimi ku se tulostaa joka kuukauteen sen merkinnän nykyisestä päivästä...
     public static void tulostaVuosi(int paiva, int kuukausi, int vuosi, DayOfWeek vkpaiva, HashMap juhlat, ArrayList < Tapahtuma > tapahtumat, ArrayList < Tehtava > tehtavat) {
         for (int kk = 1; kk <= 12; kk++) {
             if (kk > 1) {

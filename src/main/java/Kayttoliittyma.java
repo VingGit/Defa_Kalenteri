@@ -6,6 +6,7 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Kayttoliittyma {
@@ -21,7 +22,7 @@ public class Kayttoliittyma {
         this.kalenteri = kalenteri;
         this.lukija = lukija;
         this.pvm2 = LocalDate.now();
-        eteenTaakseKuukausia= pvm2.getMonthValue();
+        eteenTaakseKuukausia = pvm2.getMonthValue();
 
         // Yritetään hakea tallennettua asetusta ohjeen tulostamisesta.
         try {
@@ -38,20 +39,17 @@ public class Kayttoliittyma {
         this.tulostaKuukausinakyma = true;
     }
 
-
-
-    public void kaynnista() throws ParseException {
+    public void kaynnista() {
         while (true) {
             this.kalenteri.tulostaTervehdysJaKello();
             System.out.println("");
 
             if (this.tulostaKuukausinakyma) {
                 this.kalenteri.tulostaKuukausiNakyma();
-                System.out.println("");
             } else {
                 this.kalenteri.tulostaVuosiNakyma();
-                System.out.println("");
             }
+            System.out.println("");
 
 
             this.kalenteri.tulostaMerkinnat();
@@ -98,7 +96,16 @@ public class Kayttoliittyma {
                 try {
                     FileOutputStream fos = new FileOutputStream("MuistutusData");
                     ObjectOutputStream oos = new ObjectOutputStream(fos);
-                    oos.writeObject(this.kalenteri.annaMuistutusLista());
+
+                    // Tallennetaan vain ne muistutukset jotka ovat vielä tulossa. Näin estetään jo menneiden muistutusten Windows notificaation popuppaus.
+                    ArrayList<Merkinta> muistutukset = new ArrayList<>();
+                    for (Merkinta m : this.kalenteri.annaMuistutusLista()) {
+                        if (m.muistutusAika.isAfter(LocalDateTime.now())) {
+                            muistutukset.add(m);
+                        }
+                    }
+
+                    oos.writeObject(muistutukset);
                     oos.close();
                     fos.close();
                 } catch (IOException ioe) {
@@ -124,14 +131,13 @@ public class Kayttoliittyma {
         }
     }
 
-    private void kaynnistaPaivanakyma() throws ParseException {
+    private void kaynnistaPaivanakyma() {
         while (true) {
             this.kalenteri.tulostaPaivaNakyma();
             System.out.println();
 
             tulostaPaivanakymaOhje();
             System.out.println();
-
 
             System.out.print("  Kirjoita komento t\u00E4h\u00E4n ja paina ENTER: ");
             String syote = lukija.nextLine();
@@ -145,7 +151,7 @@ public class Kayttoliittyma {
 
     }
 
-    public void kasitteleKomento(String komento) throws ParseException {
+    public void kasitteleKomento(String komento) {
         switch (komento) {
             case "d":
                 clrscr();
@@ -169,24 +175,23 @@ public class Kayttoliittyma {
 
             case "e":
                 clrscr();
-                if(eteenTaakseKuukausia<13){
+                if (eteenTaakseKuukausia < 13){
                     eteenTaakseKuukausia++;
                 }
-                if(eteenTaakseKuukausia==13){
-
-                    eteenTaakseKuukausia=1;
+                if (eteenTaakseKuukausia == 13){
+                    eteenTaakseKuukausia = 1;
                 }
                 this.kalenteri.seuraavaKuukausi();
                 break;
 
             case "q":
                 clrscr();
-                if(eteenTaakseKuukausia>0){
+                if(eteenTaakseKuukausia > 0){
                     eteenTaakseKuukausia--;
                 }
-                if(eteenTaakseKuukausia==0){
+                if(eteenTaakseKuukausia == 0){
 
-                    eteenTaakseKuukausia=12;
+                    eteenTaakseKuukausia = 12;
                 }
                 this.kalenteri.edellinenKuukausi();
                 break;
@@ -251,7 +256,7 @@ public class Kayttoliittyma {
         }
     }
 
-    public void kasitteleKomentoPaivanakyma(String komento) throws ParseException {
+    public void kasitteleKomentoPaivanakyma(String komento) {
         switch (komento) {
             case "1":
                 System.out.println();
@@ -287,228 +292,232 @@ public class Kayttoliittyma {
         while (true) {
             System.out.print("  Anna p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4 (d ohje): ");
             String syote = this.lukija.nextLine();
-            if (syote.equals("c")) {
-                clrscr();
-                break;
-            }
-
             if (syote.equals("d")) {
                 tulostaPvmVaihtoOhje();
                 continue;
             }
 
-            LocalDate pvm = syotePaivamaaraksi(syote);
-            this.kalenteri.asetaPaivamaaraa(pvm);
-            break;
+            if (syote.matches("([1-9]|(1[0-9])|(2[0-9])|(3[0-1]))")) {
+                try {
+                    LocalDate pvm = LocalDate.of(this.kalenteri.annaPvm().getYear(), this.kalenteri.annaPvm().getMonth(), Integer.valueOf(syote));
+                    this.kalenteri.asetaPaivamaaraa(pvm);
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("  Annoit p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4n v\u00E4\u00E4r\u00E4ss\u00E4 muodossa tai yritit menn\u00E4 p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4\u00E4n jota ei ole olemassa.");
+                } catch (DateTimeException e) {
+                    System.out.println("  Annoit p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4n v\u00E4\u00E4r\u00E4ss\u00E4 muodossa tai yritit menn\u00E4 p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4\u00E4n jota ei ole olemassa.");
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+            }
+
+            if (syote.matches("([1-9]|(1[0-9])|(2[0-9])|(3[0-1]))\\." +
+                                     "([1-9]|(1[0-2]))")) {
+                String[] osat = syote.split("\\.");
+                try {
+                    LocalDate pvm = LocalDate.of(this.kalenteri.annaPvm().getYear(), Integer.valueOf(osat[1]), Integer.valueOf(osat[0]));
+                    this.kalenteri.asetaPaivamaaraa(pvm);
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("  Annoit p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4n v\u00E4\u00E4r\u00E4ss\u00E4 muodossa tai yritit menn\u00E4 p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4\u00E4n jota ei ole olemassa.");
+                } catch (DateTimeException e) {
+                    System.out.println("  Annoit p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4n v\u00E4\u00E4r\u00E4ss\u00E4 muodossa tai yritit menn\u00E4 p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4\u00E4n jota ei ole olemassa.");
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+            }
+
+            if (syote.matches("([1-9]|(1[0-9])|(2[0-9])|(3[0-1]))\\." +
+                                     "([1-9]|(1[0-2]))\\." +
+                                     "(([1-9][0-9][0-9][0-9])|([1-9][0-9][0-9])|([1-9][0-9])|([0-9]))")) {
+                String[] osat = syote.split("\\.");
+                try {
+                    LocalDate pvm = LocalDate.of(Integer.valueOf(osat[2]), Integer.valueOf(osat[1]), Integer.valueOf(osat[0]));
+                    this.kalenteri.asetaPaivamaaraa(pvm);
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("  Annoit p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4n v\u00E4\u00E4r\u00E4ss\u00E4 muodossa tai yritit menn\u00E4 p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4\u00E4n jota ei ole olemassa.");
+                } catch (DateTimeException e) {
+                    System.out.println("  Annoit p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4n v\u00E4\u00E4r\u00E4ss\u00E4 muodossa tai yritit menn\u00E4 p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4\u00E4n jota ei ole olemassa.");
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+            }
+
+            System.out.println("  Annoit p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4n v\u00E4\u00E4r\u00E4ss\u00E4 muodossa tai yritit menn\u00E4 p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4\u00E4n jota ei ole olemassa.");
         }
     }
 
-    private void lisaaTapahtuma() throws ParseException {
+    private void lisaaTapahtuma() {
         String syote;
+        System.out.print("  Nime\u00E4 tapahtuma (c - takaisin): ");
+        syote = lukija.nextLine();
+        if (syote.equals("c")) {
+            return;
+        }
+
+        // Luodaan uusi tapahtuma syötetyllä nimellä.
+        Tapahtuma tapahtuma = new Tapahtuma(syote);
+
+        // aloitussajan asetus
+        boolean suoritetaanLopetusajanAsetus = true;
+        LocalDateTime aloitus = LocalDateTime.of(this.kalenteri.annaPvm().getYear(), this.kalenteri.annaPvm().getMonth().getValue(), this.kalenteri.annaPvm().getDayOfMonth(), 0, 0);
         while (true) {
-            System.out.print("  Nime\u00E4 tapahtuma (c - takaisin): ");
+            System.out.print("  Aseta tapahtuman alkamiskellonaika. Sy\u00F6t\u00E4 a jos tapahtuma kest\u00E4\u00E4 koko p\u00E4iv\u00E4n: ");
             syote = lukija.nextLine();
-            if (syote.equals("c")) {
-                clrscr();
-                break;
-            }
-
-            // Luodaan uusi tapahtuma syötetyllä nimellä.
-            Tapahtuma tapahtuma = new Tapahtuma(syote);
-
-            // aloitussajan asetus
-            LocalDateTime aloitus = LocalDateTime.of(this.kalenteri.annaPvm().getYear(), this.kalenteri.annaPvm().getMonth().getValue(), this.kalenteri.annaPvm().getDayOfMonth(), 0, 0);
-            while (true) {
-                System.out.print("  Aseta alkamisaika. Sy\u00F6t\u00E4 a jos tapahtuma kest\u00E4\u00E4 koko p\u00E4iv\u00E4n: ");
-                syote = lukija.nextLine();
-                if (syote.equals("a")) {
-                    tapahtuma.asetaAjankohta(aloitus);
-                    tapahtuma.asetaLopetus(aloitus);
-                    break;
-                }
-
-                LocalTime aloitusKellonaika = syoteKellonajaksi(syote);
-
-                aloitus = LocalDateTime.of(this.kalenteri.annaPvm().getYear(), this.kalenteri.annaPvm().getMonth().getValue(), this.kalenteri.annaPvm().getDayOfMonth(), aloitusKellonaika.getHour(), aloitusKellonaika.getMinute());
-
+            if (syote.equals("a")) {
                 tapahtuma.asetaAjankohta(aloitus);
-
-                // lopetusajan asetus
-                LocalDateTime lopetus;
-                while (true) {
-                    System.out.print("  Kest\u00E4\u00E4k\u00F6 tapahtuma nykyisen p\u00E4iv\u00E4n yli? (k/e): ");
-                    syote = lukija.nextLine();
-                    if (syote.equals("k")) {
-                        System.out.print("  Anna lopetusp\u00E4iv\u00E4: ");
-                        syote = lukija.nextLine();
-                        LocalDate lopetusPvm = syotePaivamaaraksi(syote);
-
-                        System.out.print("  Anna lopetusaika: ");
-                        syote = lukija.nextLine();
-                        LocalTime lopetusAika = syoteKellonajaksi(syote);
-
-                        lopetus = LocalDateTime.of(lopetusPvm, lopetusAika);
-
-                        if (lopetus.isBefore(aloitus)) {
-                            System.out.println("  Lopetusaika on ennen aloitusaikaa! Sy\u00F6t\u00E4 kelvollinen lopetusaika!");
-                            continue;
-                        }
-
-                        tapahtuma.asetaLopetus(lopetus);
-                        break;
-
-                    } else if (syote.equals("e")) {
-                        System.out.print("  Anna lopetusaika: ");
-                        syote = lukija.nextLine();
-                        LocalTime lopetusAika = syoteKellonajaksi(syote);
-
-                        LocalDate lopetusPvm = LocalDate.of(this.kalenteri.annaPvm().getYear(), this.kalenteri.annaPvm().getMonth().getValue(), this.kalenteri.annaPvm().getDayOfMonth());
-                        lopetus = LocalDateTime.of(lopetusPvm, lopetusAika);
-
-                        if (lopetus.isBefore(aloitus)) {
-                            System.out.println("  Lopetusaika on ennen aloitusaikaa! Sy\u00F6t\u00E4 kelvollinen lopetusaika!");
-                            continue;
-                        }
-
-                        tapahtuma.asetaLopetus(lopetus);
-                        break;
-                    }
-                }
+                try {
+                    tapahtuma.asetaLopetus(aloitus);
+                } catch (LoppuEnnenAlkuaException e) { }
+                suoritetaanLopetusajanAsetus  = false;
                 break;
             }
 
-            // kuvauksen asetus
-            while (true) {
-                System.out.print("  Haluatko asettaa tapahtumalle kuvauksen? (k/e): ");
-                syote = this.lukija.nextLine();
-                if (syote.equals("k")) {
-                    System.out.print("  Kirjoita kuvaus: ");
-                    syote = this.lukija.nextLine();
-                    tapahtuma.asetaKuvaus(syote);
-                    break;
-                } else if (syote.equals("e")) {
-                    break;
-                }
+            try {
+                LocalTime aloitusKellonaika = syoteKellonajaksi(syote);
+                aloitus = LocalDateTime.of(this.kalenteri.annaPvm().getYear(), this.kalenteri.annaPvm().getMonth().getValue(), this.kalenteri.annaPvm().getDayOfMonth(), aloitusKellonaika.getHour(), aloitusKellonaika.getMinute());
+                tapahtuma.asetaAjankohta(aloitus);
+                break;
+            } catch (PvmAikaMuotoVaarinException e) {
+                System.out.println(e);
+                continue;
+            }
+        }
+
+        // lopetusajan asetus
+        LocalDateTime lopetus;
+        while (suoritetaanLopetusajanAsetus) {
+            System.out.print("  Aseta tapahtuman lopetusajankohta muodossa pp.kk.vvvv tt.mm ");
+            syote = lukija.nextLine();
+            try {
+                lopetus = syotePaivamaaraksiJaAjaksi(syote);
+                tapahtuma.asetaLopetus(lopetus);
+                break;
+            } catch (PvmAikaMuotoVaarinException e) {
+                System.out.println("  " + e);
+                continue;
+            } catch (LoppuEnnenAlkuaException e) {
+                System.out.println("  " + e);
+                continue;
+            }
+        }
+
+        // kuvauksen asetus
+        while (true) {
+            System.out.print("  Kirjoita tapahtumalle kuvaus (ENTER ohita): ");
+            syote = this.lukija.nextLine();
+            if (syote.equals("")) {
+                break;
             }
 
-            // osallistujien asetus
-            boolean flag= true;
-            while (flag) {
-                System.out.print("  Haluatko lis\u00E4t\u00E4 osallistuvat henkil\u00F6t? (k/e): ");
-                syote = this.lukija.nextLine();
-                if (syote.equals("k")) {
-                    while (true) {
-                        System.out.print("  Anna osallistujan nimi (e lopeta): ");
-                        syote = this.lukija.nextLine();
-                        if (syote.equals("e")) {
-                            flag = false;
-                            break;
-                        }
-
-                        tapahtuma.lisaaOsallistuja(syote);
-                    }
-                } else if (syote.equals("e")) {
-                    break;
-                }
-            }
-
-            // paikan asetus
-            while (true) {
-                System.out.print("  Haluatko lis\u00E4t\u00E4 paikan? (k/e): ");
-                syote = this.lukija.nextLine();
-                if (syote.equals("k")) {
-                    System.out.print("  Sy\u00F6t\u00E4 paikan nimi: ");
-                    syote = this.lukija.nextLine();
-                    tapahtuma.lisaaPaikka(syote);
-                    break;
-
-                } else if (syote.equals("e")) {
-                    break;
-                }
-            }
-
-            // muistutuksen asetus
-            while (true) {
-                System.out.print("  Haluatko muistutuksen? (k/e): ");
-                String vastaus = this.lukija.nextLine();
-                if (vastaus.equals("k")) {
-                    System.out.print("  Milloin haluat muistutuksen? Asetetaan ensin p\u00E4iv\u00E4: ");
-                    syote = this.lukija.nextLine();
-                    LocalDate pvm = syotePaivamaaraksi(syote);
-
-                    System.out.print("  Seuraavaksi kellonaika: ");
-                    syote = this.lukija.nextLine();
-                    LocalTime aika = syoteKellonajaksi(syote);
-
-                    tapahtuma.asetaMuistutus(LocalDateTime.of(pvm,aika));
-                    this.kalenteri.asetaMuistutus(tapahtuma);
-                    break;
-
-                } else if (vastaus.equals("e")) {
-                    break;
-                }
-            }
-
-            this.kalenteri.lisaaTapahtuma(tapahtuma);
+            tapahtuma.asetaKuvaus(syote);
             break;
         }
-    }
-    //näytä windows ilmoitus
 
-    private void lisaaTehtava() throws ParseException {
-        String syote;
+        // osallistujien asetus
         while (true) {
-            System.out.print("  Nime\u00E4 teht\u00E4v\u00E4 (c - takaisin): ");
-            syote = lukija.nextLine();
-            if (syote.equals("c")) {
-                clrscr();
+            System.out.print("  Kirjoita osallistuvien henkil\u00F6iden nimet erotettuna pilkulla (ENTER ohita): ");
+            syote = this.lukija.nextLine();
+            if (syote.equals("")) {
                 break;
             }
 
-            Tehtava tehtava = new Tehtava(syote);
+            tapahtuma.lisaaOsallistuja(syote);
+            break;
+        }
 
+        // paikan asetus
+        while (true) {
+            System.out.print("  Kirjoita tapahtumapaikan nimi (ENTER ohita): ");
+            syote = this.lukija.nextLine();
+            if (syote.equals("")) {
+                break;
+            }
+
+            syote = this.lukija.nextLine();
+            tapahtuma.lisaaPaikka(syote);
+
+        }
+
+        // muistutuksen asetus
+        while (true) {
+            System.out.print("  Aseta muistutuksen ajankohta muodossa p.k.v tt.mm (esim. 27.5.2020 07.05). (ENTER ohita): ");
+            syote = this.lukija.nextLine();
+            if (syote.equals("")) {
+                break;
+            }
+
+            try {
+                LocalDateTime pvmAika = syotePaivamaaraksiJaAjaksi(syote);
+                tapahtuma.asetaMuistutus(pvmAika);
+                this.kalenteri.lisaaMuistutus(tapahtuma);
+                break;
+            } catch (PvmAikaMuotoVaarinException | ParseException e) {
+                System.out.println(e);
+                continue;
+            }
+        }
+
+        // Lisätään tapahtuma kalenteriin
+        this.kalenteri.lisaaTapahtuma(tapahtuma);
+    }
+
+    private void lisaaTehtava() {
+        String syote;
+        System.out.print("  Nime\u00E4 teht\u00E4v\u00E4 (c - takaisin): ");
+        syote = lukija.nextLine();
+        if (syote.equals("c")) {
+            return;
+        }
+
+        Tehtava tehtava = new Tehtava(syote);
+
+        while (true) {
             System.out.print("  Aseta kellonaika: ");
             syote = lukija.nextLine();
-            LocalTime aika = syoteKellonajaksi(syote);
-            tehtava.asetaAjankohta(this.kalenteri.annaPvm().getYear(), this.kalenteri.annaPvm().getMonthValue(), this.kalenteri.annaPvm().getDayOfMonth(), aika.getHour(), aika.getMinute());
+            try {
+                LocalTime aika = syoteKellonajaksi(syote);
+                tehtava.asetaAjankohta(this.kalenteri.annaPvm().getYear(), this.kalenteri.annaPvm().getMonthValue(), this.kalenteri.annaPvm().getDayOfMonth(), aika.getHour(), aika.getMinute());
+                break;
+            } catch (PvmAikaMuotoVaarinException e) {
+                System.out.println(e + "Anna kellonaika muodossa tt.mm");
+                continue;
+            }
+        }
 
-            while (true) {
-                System.out.print("  Haluatko asettaa muistiinpanoja (k/e): ");
-                String vastaus = lukija.nextLine();
-                if (vastaus.equals("k")) {
-                    System.out.print("  Kirjoita muistiinpanot: ");
-                    String muistiinpanot = lukija.nextLine();
-                    tehtava.asetaMuistiinpano(muistiinpanot);
-                    break;
-                } else if (vastaus.equals("e")) {
-                    break;
-                }
+        while (true) {
+            System.out.print("  Kirjoita muistiinpanot (ENTER ohita): ");
+            syote = lukija.nextLine();
+            if (syote.equals("")) {
+                break;
             }
 
-            while (true) {
-                System.out.print("  Haluatko muistutuksen? (k/e): ");
-                String vastaus = this.lukija.nextLine();
-                if (vastaus.equals("k")) {
-                    System.out.print("  Milloin haluat muistutuksen? Asetetaan ensin p\u00E4iv\u00E4: ");
-                    syote = this.lukija.nextLine();
-                    LocalDate pvm = syotePaivamaaraksi(syote);
-
-                    System.out.print("  Seuraavaksi kellonaika: ");
-                    syote = this.lukija.nextLine();
-                    aika = syoteKellonajaksi(syote);
-
-                    tehtava.asetaMuistutus(LocalDateTime.of(pvm,aika));
-                    this.kalenteri.asetaMuistutus(tehtava);
-                    break;
-
-                } else if (vastaus.equals("e")) {
-                    break;
-                }
-            }
-
-            this.kalenteri.lisaaTehtava(tehtava);
+            tehtava.asetaMuistiinpano(syote);
             break;
         }
+
+        while (true) {
+            System.out.print("  Aseta muistutuksen ajankohta muodossa p.k.v tt.mm (ENTER ohita): ");
+            syote = lukija.nextLine();
+            if (syote.equals("")) {
+                break;
+            }
+
+            try {
+                LocalDateTime pvmAika = syotePaivamaaraksiJaAjaksi(syote);
+                tehtava.asetaMuistutus(pvmAika);
+                this.kalenteri.lisaaMuistutus(tehtava);
+                break;
+            } catch (PvmAikaMuotoVaarinException e) {
+                System.out.println(e);
+                continue;
+            } catch (ParseException e) {
+                System.out.println(e);
+            }
+        }
+
+        this.kalenteri.lisaaTehtava(tehtava);
     }
 
     private void poistaTapahtuma() {
@@ -571,69 +580,41 @@ public class Kayttoliittyma {
         }
     }
 
-    private LocalTime syoteKellonajaksi(String syote) {
-        LocalTime aika = null;
-        boolean flag = true;
-        while (flag) {
-            try {
-                String[] osat = syote.split("\\.");
-                int tunnit = Integer.valueOf(osat[0]);
-                int minuutit = Integer.valueOf(osat[1]);
-                aika = LocalTime.of(tunnit, minuutit);
-                flag = false;
+    private LocalDateTime syotePaivamaaraksiJaAjaksi(String syote) throws PvmAikaMuotoVaarinException {
+        if (!syote.matches("([1-9]|(1[0-9])|(2[0-9])|(3[0-1]))\\." +                       // päivä
+                "([1-9]|(1[0-2]))\\." +                                                           // kuukausi
+                "(([1-9][0-9][0-9][0-9]\\s)|([1-9][0-9][0-9]\\s)|([1-9][0-9]\\s)|([0-9]\\s))" +   // vuosi
+                "(((0|1)[0-9])|(2[0-3]))\\.[0-5][0-9]")) {                                        // kellonaika
 
-            } catch (NumberFormatException e) {
-                System.out.print("  Anna kelvollinen kellonaika (esim 7.45): ");
-            } catch (ArrayIndexOutOfBoundsException e) {
-                System.out.print("  Anna kelvollinen kellonaika (esim 7.45): ");
-            } catch (DateTimeException e) {
-                System.out.print("  Anna kelvollinen kellonaika (esim 7.45): ");
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                if (flag) {
-                    syote = this.lukija.nextLine();
-                }
-            }
+            throw new PvmAikaMuotoVaarinException();
         }
-        return aika;
+
+        String[] pvmJaKellonaika = syote.split(" ");
+
+        return LocalDateTime.of(syotePaivamaaraksi(pvmJaKellonaika[0]), syoteKellonajaksi(pvmJaKellonaika[1]));
     }
 
-    private LocalDate syotePaivamaaraksi(String syote) {
-        int paiva = this.kalenteri.annaPvm().getDayOfMonth();
-        int kuukausi = this.kalenteri.annaPvm().getMonth().getValue();
-        int vuosi = this.kalenteri.annaPvm().getYear();
-        LocalDate pvm = LocalDate.of(vuosi, kuukausi, paiva);
+    private LocalDate syotePaivamaaraksi(String syote) throws PvmAikaMuotoVaarinException {
+        if (!syote.matches("([1-9]|(1[0-9])|(2[0-9])|(3[0-1]))\\." +                       // päivä
+                "([1-9]|(1[0-2]))\\." +                                                           // kuukausi
+                "(([1-9][0-9][0-9][0-9])|([1-9][0-9][0-9])|([1-9][0-9])|([0-9]))")) {              // vuosi
 
-        boolean flag = true;
-        while (flag) {
-            try {
-                String[] osat = syote.split("\\.");
-                paiva = Integer.valueOf(osat[0]);
-                kuukausi = Integer.valueOf(osat[1]);
-                vuosi = Integer.valueOf(osat[2]);
-                pvm = LocalDate.of(vuosi, kuukausi, paiva);
-                flag = false;
-
-            } catch (NumberFormatException e) {
-                System.out.print("  Anna kelvollinen p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4 (esim 4.10.2021): ");
-            } catch (ArrayIndexOutOfBoundsException e) {
-                try {
-                    pvm = LocalDate.of(vuosi, kuukausi, paiva);
-                } catch (DateTimeException ex) {
-                    System.out.print("  Anna kelvollinen p\u00E4iv\u00E4m\u00E4\u00E4r\u00E4 (esim 4.10.): ");
-                    continue;
-                }
-               flag = false;
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                if (flag) {
-                    syote = this.lukija.nextLine();
-                }
-            }
+            throw new PvmAikaMuotoVaarinException();
         }
-        return pvm;
+
+        String[] pvmOsat = syote.split("\\.");
+
+        return LocalDate.of(Integer.valueOf(pvmOsat[2]), Integer.valueOf(pvmOsat[1]), Integer.valueOf(pvmOsat[0]));
+    }
+
+    private LocalTime syoteKellonajaksi(String syote) throws PvmAikaMuotoVaarinException {
+        if (!syote.matches("(((0|1)[0-9])|(2[0-3]))\\.[0-5][0-9]")) {
+            throw new PvmAikaMuotoVaarinException();
+        }
+
+        String[] kelloOsat = syote.split("\\.");
+
+        return LocalTime.of(Integer.valueOf(kelloOsat[0]), Integer.valueOf(kelloOsat[1]));
     }
 
     public static void clrscr() {

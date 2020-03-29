@@ -47,6 +47,7 @@ public class Kalenteri {
             this.tehtavat = new ArrayList<>();
         }
 
+        // Yritetään hakea tallennettuja muistutuksi tiedostostosta MuistutusData. Jos tiedostoa ei ole, luodaa uusi tyhjä lista. MuistutusData tiedosto luodaan kun ohjelma suljetaan.
         try {
             FileInputStream fis = new FileInputStream("MuistutusData");
             ObjectInputStream ois = new ObjectInputStream(fis);
@@ -63,7 +64,6 @@ public class Kalenteri {
                 timer.schedule(m, date);
             }
 
-
             ois.close();
             fis.close();
 
@@ -72,45 +72,57 @@ public class Kalenteri {
         }
     }
 
-
+    /**___________________TAPAHTUMIIN/TEHTÄVIIN/JUHLIIN LIITTYVÄT METODIT______________________________________
+     * Näillä metodeilla voidaan käsitellä kalenterin listoja.
+     */
 
     public LocalDate annaPvm() {
         return this.pvm;
     }
 
-    public void asetaMuistutus(Merkinta merkinta) {
+    public void lisaaTapahtuma(Tapahtuma tapahtuma) {
+        this.tapahtumat.add(tapahtuma);
+    }
+
+    public void lisaaTehtava(Tehtava tehtava) {
+        this.tehtavat.add(tehtava);
+    }
+
+    public void lisaaMuistutus(Merkinta merkinta) {
         this.muistutukset.add(merkinta);
+    }
+    
+    public boolean poistaTapahtuma(String poistettavanNimi) {
+        return this.tapahtumat.removeIf(i -> poistettavanNimi.equals(i.annaNimi()));
+    }
+
+    public boolean poistaTehtava(String poistettavanNimi) {
+        return this.tehtavat.removeIf(i -> this.pvm.isEqual(i.annaAjankohta().toLocalDate()) && poistettavanNimi.equals(i.annaNimi()));
+    }
+
+    public ArrayList<Tapahtuma> annaTapahtumaLista() {
+        return this.tapahtumat;
+    }
+
+    public ArrayList<Tehtava> annaTehtavaLista() {
+        return this.tehtavat;
     }
 
     public ArrayList<Merkinta> annaMuistutusLista() {
         return this.muistutukset;
     }
 
-
-    /**___________________TAPAHTUMIIN/TEHTÄVIIN/JUHLIIN LIITTYVÄT METODIT______________________________________
-     * Näillä metodeilla voidaan käsitellä kalenterin listoja.
-     */
-    
-    public void lisaaTapahtuma(Tapahtuma tapahtuma) {
-        this.tapahtumat.add(tapahtuma);
-    }
-    
-    public boolean poistaTapahtuma(String poistettavanNimi) {
-        return this.tapahtumat.removeIf(i -> poistettavanNimi.equals(i.annaNimi()));
-
-    }
-        
     public boolean poistaPaivanTapahtumat() {
         return this.tapahtumat.removeIf(i ->
-            (this.pvm.isAfter(i.annaAjankohta().toLocalDate())  &&  (this.pvm.isBefore(i.annaLopetus().toLocalDate()))  ||
-             this.pvm.isEqual(i.annaAjankohta().toLocalDate())  ||
-             this.pvm.isEqual(i.annaLopetus().toLocalDate())));
+                (this.pvm.isAfter(i.annaAjankohta().toLocalDate())  &&  (this.pvm.isBefore(i.annaLopetus().toLocalDate()))  ||
+                        this.pvm.isEqual(i.annaAjankohta().toLocalDate())  ||
+                        this.pvm.isEqual(i.annaLopetus().toLocalDate())));
     }
 
-    public ArrayList<Tapahtuma> annaTapahtumaLista() {
-        return this.tapahtumat;
+    public boolean poistaPaivanTehtavat() {
+        return this.tehtavat.removeIf(i -> this.pvm.isEqual(i.annaAjankohta().toLocalDate()));
     }
-    
+
     public boolean onkoTapahtumia() {
         for (Tapahtuma t : this.tapahtumat) {
             if ( this.pvm.isAfter(t.annaAjankohta().toLocalDate())  &&  (this.pvm.isBefore(t.annaLopetus().toLocalDate()))  ||
@@ -120,22 +132,6 @@ public class Kalenteri {
             }
         }
         return false;
-    }
-
-    public void lisaaTehtava(Tehtava tehtava) {
-        this.tehtavat.add(tehtava);
-    }
-
-    public boolean poistaTehtava(String poistettavanNimi) {
-        return this.tehtavat.removeIf(i -> this.pvm.isEqual(i.annaAjankohta().toLocalDate()) && poistettavanNimi.equals(i.annaNimi()));
-    }
-    
-    public boolean poistaPaivanTehtavat() {
-        return this.tehtavat.removeIf(i -> this.pvm.isEqual(i.annaAjankohta().toLocalDate()));
-    }
-
-    public ArrayList<Tehtava> annaTehtavaLista() {
-        return this.tehtavat;
     }
 
     public boolean onkoTehtavia() {
@@ -178,7 +174,6 @@ public class Kalenteri {
         }
         return kuukaudenTehtavat;
     }
-
 
     /**_______________________LIIKKUMISMETODIT___________________________________
      * Metodit muuttavat päivämäärää, sekä osa tarkistaa muuttuiko vuosi.
@@ -327,7 +322,6 @@ public class Kalenteri {
             Juhlapyhat.asetaJuhlat(this.juhlat, this.pvm.getYear());
         }
     }
-
 
     /**_________________________________TULOSTUSMETODIT__________________________________________________
      */

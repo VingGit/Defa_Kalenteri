@@ -1,19 +1,16 @@
-
-import java.text.ParseException;
 import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args)  {
         Kalenteri kalenteri = new Kalenteri();
-        Scanner lukija = new Scanner(System.in,"UTF8");
+        Scanner lukija = new Scanner(System.in,"IBM850");
         Kayttoliittyma liittyma = new Kayttoliittyma(lukija, kalenteri);
 
-        // estetään värien tulostuksesta syntyvä bugi
+        // Estetään värien tulostuksesta syntyvä bugi.
         liittyma.kasitteleKomento("w");
         liittyma.kasitteleKomento("s");
 
         liittyma.kaynnista();
-
     }
 }

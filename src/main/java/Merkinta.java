@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Merkinta extends TimerTask implements Serializable {
+public abstract class Merkinta extends TimerTask implements Serializable {
 
     protected String nimi;
     protected LocalDateTime ajankohta;
@@ -22,8 +22,6 @@ public class Merkinta extends TimerTask implements Serializable {
     public Merkinta(String nimi) {
         this.nimi = nimi;
     }
-
-
 
     public void asetaNimi(String nimi) {
         this.nimi = nimi;
@@ -58,10 +56,6 @@ public class Merkinta extends TimerTask implements Serializable {
 
         Timer timer = new Timer();
         timer.schedule(this, date);
-    }
-
-    public void poistaMuistutus() {
-        this.muistutusAika = null;
     }
 
     public boolean onkoMuistutus() {
